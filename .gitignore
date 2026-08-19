@@ -1,0 +1,20 @@
+# Кэш рыночных данных (регенерируется через smartmoney.data.get_cached)
+data/
+data_*.csv
+
+# Runtime-состояние paper-бота
+paper_state.json
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# ОС/редакторы
+.DS_Store
+.idea/
+.vscode/
