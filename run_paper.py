@@ -26,7 +26,9 @@ from paper.config import PaperConfig
 from paper.engine import PaperEngine
 from paper import state as state_mod
 
-STATE_PATH = "paper_state.json"
+# пути настраиваются через окружение (для монтирования тома на VPS)
+STATE_PATH = os.environ.get("PAPER_STATE", "paper_state.json")
+LOG_PATH = os.environ.get("PAPER_LOG", "paper.log")
 REPLAY_BARS = 1500
 
 
@@ -109,26 +111,29 @@ def run_live(cfg: PaperConfig, testnet: bool):
             logging.warning("не удалось получить баланс testnet: %s", e)
     last_ts = {s: (eng.states[s].__dict__.get("_last_ts") if s in eng.states else 0) for s in cfg.symbols}
 
-    logging.info("LIVE старт | брокер=%s | монет=%d", broker.name, len(cfg.symbols))
+    logging.info("LIVE старт | брокер=%s | монет=%d | state=%s", broker.name, len(cfg.symbols), STATE_PATH)
     tf_ms = 3_600_000
     while True:
-        for s in cfg.symbols:
-            try:
-                ohlcv = pub.fetch_ohlcv(s, cfg.timeframe, limit=cfg.sma_n + 6)
-                if len(ohlcv) < cfg.sma_n + 2:
-                    continue
-                closed = ohlcv[-2]  # последний ЗАКРЫТЫЙ бар (последний в списке — формирующийся)
-                candle = dict(ts=closed[0], o=closed[1], h=closed[2], l=closed[3], c=closed[4])
-                if candle["ts"] == last_ts.get(s):
-                    continue
-                last_ts[s] = candle["ts"]
-                eng.step(s, candle)
-            except Exception as e:  # pragma: no cover
-                logging.warning("%s ошибка шага: %s", s, e)
-        state_mod.save(eng, STATE_PATH)
-        m = eng.summary()
-        logging.info("итог: сделок=%d equity=%.2f откр.позиций=%d",
-                     m["trades"], m["equity"], m["open_positions"])
+        try:
+            for s in cfg.symbols:
+                try:
+                    ohlcv = pub.fetch_ohlcv(s, cfg.timeframe, limit=cfg.sma_n + 6)
+                    if len(ohlcv) < cfg.sma_n + 2:
+                        continue
+                    closed = ohlcv[-2]  # последний ЗАКРЫТЫЙ бар (последний в списке — формирующийся)
+                    candle = dict(ts=closed[0], o=closed[1], h=closed[2], l=closed[3], c=closed[4])
+                    if candle["ts"] == last_ts.get(s):
+                        continue
+                    last_ts[s] = candle["ts"]
+                    eng.step(s, candle)
+                except Exception as e:  # pragma: no cover
+                    logging.warning("%s ошибка шага: %s", s, e)
+            state_mod.save(eng, STATE_PATH)
+            m = eng.summary()
+            logging.info("итог: сделок=%d equity=%.2f откр.позиций=%d",
+                         m["trades"], m["equity"], m["open_positions"])
+        except Exception as e:  # pragma: no cover — цикл не должен падать целиком
+            logging.exception("ошибка цикла: %s", e)
         # спим до следующего часа + небольшой запас
         now = time.time()
         sleep_s = tf_ms / 1000 - (now % (tf_ms / 1000)) + 5
@@ -136,10 +141,15 @@ def run_live(cfg: PaperConfig, testnet: bool):
 
 
 def main():
+    from logging.handlers import RotatingFileHandler
+    for p in (LOG_PATH, STATE_PATH):          # создать каталоги, если задан вложенный путь
+        d = os.path.dirname(p)
+        if d:
+            os.makedirs(d, exist_ok=True)
+    fileh = RotatingFileHandler(LOG_PATH, maxBytes=10_000_000, backupCount=3, encoding="utf-8")
     logging.basicConfig(
         level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s",
-        handlers=[logging.StreamHandler(),
-                  logging.FileHandler("paper.log", encoding="utf-8")])
+        handlers=[logging.StreamHandler(), fileh])
     ap = argparse.ArgumentParser()
     ap.add_argument("--once", action="store_true", help="офлайн-реплей по кэшу (демо)")
     ap.add_argument("--live", action="store_true", help="живой цикл на публичных данных")

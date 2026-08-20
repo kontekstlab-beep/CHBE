@@ -1,0 +1,17 @@
+services:
+  bot:
+    build: .
+    image: chbe-paper-bot
+    container_name: chbe-paper-bot
+    restart: unless-stopped          # автоперезапуск при падении/ребуте VPS
+    env_file: .env                   # BINANCE_TESTNET_KEY / BINANCE_TESTNET_SECRET
+    environment:
+      PAPER_STATE: /data/paper_state.json
+      PAPER_LOG: /data/paper.log
+    volumes:
+      - ./state:/data                # состояние и логи переживают пересоздание контейнера
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
