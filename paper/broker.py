@@ -6,6 +6,7 @@
 """
 from __future__ import annotations
 
+import logging
 import os
 from typing import Dict, List, Optional
 
@@ -63,7 +64,7 @@ class TestnetBroker:
     """
     name = "testnet"
 
-    def __init__(self):
+    def __init__(self, leverage: int = 1, log=None):
         try:
             import ccxt  # noqa
         except ImportError as e:  # pragma: no cover
@@ -82,38 +83,95 @@ class TestnetBroker:
         })
         self.ex.set_sandbox_mode(True)  # TESTNET
         self.ex.load_markets()
+        self.leverage = leverage
+        self._log = log or logging.getLogger("paper")
+        self._open: Dict[str, dict] = {}   # order_id -> {symbol, side}
+        self._levered = set()
+
+    # --- подготовка инструмента ---
+    def _ensure_leverage(self, symbol):
+        if symbol in self._levered:
+            return
+        try:
+            self.ex.set_leverage(self.leverage, symbol)
+        except Exception as e:  # плечо могло быть уже задано / позиция открыта
+            self._log.debug("set_leverage %s: %s", symbol, e)
+        self._levered.add(symbol)
+
+    def _round(self, symbol, price, qty):
+        price = float(self.ex.price_to_precision(symbol, price))
+        qty = float(self.ex.amount_to_precision(symbol, qty))
+        return price, qty
+
+    def _meets_min(self, symbol, price, qty) -> bool:
+        m = self.ex.market(symbol)
+        limits = m.get("limits", {})
+        min_amt = (limits.get("amount") or {}).get("min") or 0
+        min_cost = (limits.get("cost") or {}).get("min") or 0
+        if qty <= 0 or qty < min_amt:
+            return False
+        if min_cost and price * qty < min_cost:
+            return False
+        return True
+
+    def _create(self, symbol, side, price, qty, params):
+        self._ensure_leverage(symbol)
+        price, qty = self._round(symbol, price, qty)
+        if price and not self._meets_min(symbol, price, qty):
+            self._log.info("%s пропуск ордера: qty=%s не проходит min amount/notional", symbol, qty)
+            return None
+        try:
+            o = self.ex.create_order(symbol, "limit" if price else "market", side,
+                                     qty, price or None, params=params)
+        except Exception as e:  # postOnly-отказ, precision, маржа и т.п. — это реальные данные
+            self._log.warning("%s ордер отклонён (%s): %s", symbol, side, e)
+            return None
+        self._open[o["id"]] = dict(symbol=symbol, side=side)
+        return o["id"]
 
     def place_limit_buy(self, symbol, price, qty):
-        o = self.ex.create_order(symbol, "limit", "buy", qty, price,
-                                 params={"postOnly": True})
-        return o["id"]
+        return self._create(symbol, "buy", price, qty, {"postOnly": True})
 
     def place_limit_sell(self, symbol, price, qty):
-        o = self.ex.create_order(symbol, "limit", "sell", qty, price,
-                                 params={"postOnly": True, "reduceOnly": True})
-        return o["id"]
+        return self._create(symbol, "sell", price, qty, {"postOnly": True, "reduceOnly": True})
 
     def cancel(self, symbol, order_id):
+        self._open.pop(order_id, None)
         try:
             self.ex.cancel_order(order_id, symbol)
         except Exception:
             pass
 
     def market_sell(self, symbol, qty, ref_price=None):
-        o = self.ex.create_order(symbol, "market", "sell", qty,
-                                 params={"reduceOnly": True})
+        self._ensure_leverage(symbol)
+        _, qty = self._round(symbol, ref_price or 1, qty)
+        o = self.ex.create_order(symbol, "market", "sell", qty, params={"reduceOnly": True})
         return dict(side="sell", price=o.get("average") or ref_price, qty=qty, maker=False)
 
     def sync(self, symbol, candle) -> List[dict]:
-        """Опрашивает открытые ордера; помечает исполненные как fills."""
+        """Опрашивает ТОЛЬКО свои открытые ордера по символу; исполненные -> fills."""
         fills = []
-        for o in self.ex.fetch_orders(symbol, limit=20):
-            if o["status"] == "closed" and o.get("filled"):
-                fills.append(dict(order_id=o["id"], side=o["side"],
+        for oid in [i for i, o in self._open.items() if o["symbol"] == symbol]:
+            try:
+                o = self.ex.fetch_order(oid, symbol)
+            except Exception as e:
+                self._log.debug("fetch_order %s: %s", oid, e)
+                continue
+            status = o.get("status")
+            if status == "closed" and o.get("filled"):
+                fills.append(dict(order_id=oid, side=o["side"],
                                   price=o.get("average") or o["price"],
                                   qty=o["filled"], maker=True))
+                self._open.pop(oid, None)
+            elif status in ("canceled", "rejected", "expired"):
+                self._open.pop(oid, None)
         return fills
 
     def equity(self) -> float:
         bal = self.ex.fetch_balance()
         return float(bal["USDT"]["total"])
+
+    def preflight(self) -> dict:
+        """Проверка подключения без сделок: баланс + число рынков."""
+        bal = self.ex.fetch_balance()
+        return dict(usdt=float(bal["USDT"]["total"]), markets=len(self.ex.markets))

@@ -74,8 +74,22 @@ def run_once(cfg: PaperConfig):
 def make_broker(testnet: bool):
     if testnet:
         from paper.broker import TestnetBroker
-        return TestnetBroker()
+        return TestnetBroker(leverage=1)
     return DryRunBroker()
+
+
+def run_check():
+    """Предполётная проверка testnet: подключение + баланс, БЕЗ сделок."""
+    from paper.broker import TestnetBroker
+    broker = TestnetBroker(leverage=1)
+    info = broker.preflight()
+    print("=== TESTNET preflight ===")
+    print(f"Подключение OK. Баланс USDT: {info['usdt']:.2f} | рынков загружено: {info['markets']}")
+    if info["usdt"] <= 0:
+        print("ВНИМАНИЕ: нулевой баланс. На testnet.binancefuture.com нажмите "
+              "'Perpetual Futures' и пополните тестовый баланс (кнопка faucet).")
+    else:
+        print("Готово к запуску: python run_paper.py --live --testnet")
 
 
 def run_live(cfg: PaperConfig, testnet: bool):
@@ -86,6 +100,13 @@ def run_live(cfg: PaperConfig, testnet: bool):
     if os.path.exists(STATE_PATH):
         state_mod.load(eng, STATE_PATH)
         logging.info("состояние восстановлено из %s", STATE_PATH)
+    # для testnet сайзинг считаем от РЕАЛЬНОГО баланса, а не виртуального
+    if testnet:
+        try:
+            eng.equity = broker.equity()
+            logging.info("баланс testnet: %.2f USDT", eng.equity)
+        except Exception as e:
+            logging.warning("не удалось получить баланс testnet: %s", e)
     last_ts = {s: (eng.states[s].__dict__.get("_last_ts") if s in eng.states else 0) for s in cfg.symbols}
 
     logging.info("LIVE старт | брокер=%s | монет=%d", broker.name, len(cfg.symbols))
@@ -115,14 +136,20 @@ def run_live(cfg: PaperConfig, testnet: bool):
 
 
 def main():
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s",
+        handlers=[logging.StreamHandler(),
+                  logging.FileHandler("paper.log", encoding="utf-8")])
     ap = argparse.ArgumentParser()
     ap.add_argument("--once", action="store_true", help="офлайн-реплей по кэшу (демо)")
     ap.add_argument("--live", action="store_true", help="живой цикл на публичных данных")
     ap.add_argument("--testnet", action="store_true", help="реальные ордера на Binance testnet")
+    ap.add_argument("--check", action="store_true", help="предполётная проверка testnet (без сделок)")
     args = ap.parse_args()
     cfg = PaperConfig()
-    if args.live:
+    if args.check:
+        run_check()
+    elif args.live:
         run_live(cfg, args.testnet)
     else:
         run_once(cfg)

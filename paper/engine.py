@@ -94,8 +94,9 @@ class PaperEngine:
                 price = candle["c"]
                 qty = (self.equity * cfg.size_frac) / price
                 oid = self.broker.place_limit_buy(symbol, price, qty)
-                st.pending = Pending(oid, price, st.bar)
-                log.info("%s ВХОД лимитка @%.6f qty=%.6f (z<%.1f)", symbol, price, qty, cfg.entry_z)
+                if oid is not None:                 # None -> ордер отклонён/мал; пропуск
+                    st.pending = Pending(oid, price, st.bar)
+                    log.info("%s ВХОД лимитка @%.6f qty=%.6f (z<%.1f)", symbol, price, qty, cfg.entry_z)
 
         # 4) отмена протухшей лимитки
         if st.pending is not None and (st.bar - st.pending.placed_bar) > cfg.fill_window:

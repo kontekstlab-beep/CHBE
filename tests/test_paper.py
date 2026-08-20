@@ -47,6 +47,21 @@ def test_engine_full_trade_cycle_dryrun():
     assert eng.trades[0].reason in ("reversion", "time", "stop")
 
 
+def test_engine_skips_when_order_rejected():
+    # брокер вернул None (ордер отклонён/мал) -> pending не заводится, без падения.
+    class RejectBroker(DryRunBroker):
+        def place_limit_buy(self, symbol, price, qty):
+            return None
+
+    cfg = PaperConfig(symbols=["BTC/USDT"])
+    eng = PaperEngine(cfg, RejectBroker())
+    for _ in range(47):
+        eng.step("BTC/USDT", _candle(100.0))
+    eng.step("BTC/USDT", _candle(95.0, l=94.9))     # сигнал, но ордер отклонён
+    st = eng.states["BTC/USDT"]
+    assert st.pending is None and st.position is None
+
+
 def test_engine_cancels_unfilled_limit():
     cfg = PaperConfig(symbols=["BTC/USDT"], fill_window=3)
     eng = PaperEngine(cfg, DryRunBroker())
