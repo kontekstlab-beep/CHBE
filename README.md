@@ -1,8 +1,15 @@
-# Smart Money trading bot — прототип
+# Crypto trading bot — от методики ICT до mean-reversion
 
-Реализация примитивов методики (Smart Money / ICT) по ТЗ. Этап 1 (M1): ядро
-разметки структуры рынка + юнит-тесты + демо. Стратегия, бэктестер и биржевой
-слой — следующие этапы.
+[![tests](https://github.com/kontekstlab-beep/CHBE/actions/workflows/tests.yml/badge.svg)](https://github.com/kontekstlab-beep/CHBE/actions/workflows/tests.yml)
+
+Полный исследовательский цикл с честной out-of-sample-проверкой на каждом шаге:
+реализация методики Smart Money / ICT → строгая валидация (edge≈0 на независимых
+данных) → разведка данных → найденная закономерность **mean-reversion** (пережила
+чистый HOLDOUT) → **paper-трейдинг** на Binance testnet.
+
+Кодовая база — чистый Python (примитивы, событийный бэктестер без look-ahead,
+метрики, walk-forward, мультиТФ, protocol TUNING/OOS/HOLDOUT, paper-движок). 43 теста.
+Историю этапов (M1…M5) с результатами см. ниже.
 
 ## Структура
 
