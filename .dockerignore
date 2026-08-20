@@ -1,0 +1,13 @@
+.git/
+data/
+data_*.csv
+tests/
+smartmoney/
+state/
+.env
+paper_state.json
+*.log
+__pycache__/
+*.py[cod]
+*.md
+.github/

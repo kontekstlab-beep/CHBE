@@ -5,6 +5,10 @@ data_*.csv
 # Runtime-состояние paper-бота
 paper_state.json
 *.log
+state/
+
+# Секреты (ключи testnet) — НИКОГДА не коммитить
+.env
 
 # Python
 __pycache__/
