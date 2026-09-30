@@ -9,7 +9,8 @@
 
   # живой цикл с РЕАЛЬНЫМИ ордерами на Binance TESTNET (нужны ключи в окружении)
   #   export BINANCE_TESTNET_KEY=...   BINANCE_TESTNET_SECRET=...
-  python run_paper.py --live --testnet
+  python run_paper.py --live --testnet            # фьючерсный testnet
+  python run_paper.py --live --testnet --spot     # СПОТОВЫЙ testnet (testnet.binance.vision)
 
 Ключи НЕ хардкодятся и вводятся только вами (см. README, раздел paper).
 """
@@ -73,31 +74,38 @@ def run_once(cfg: PaperConfig):
         print(f"Средний нетто/сделку (в % от риска позиции): {net_per:+.3f}%")
 
 
-def make_broker(testnet: bool):
+def make_broker(testnet: bool, spot: bool = False):
     if testnet:
+        if spot:
+            from paper.broker import SpotTestnetBroker
+            return SpotTestnetBroker()
         from paper.broker import TestnetBroker
         return TestnetBroker(leverage=1)
     return DryRunBroker()
 
 
-def run_check():
+def run_check(spot: bool = False):
     """Предполётная проверка testnet: подключение + баланс, БЕЗ сделок."""
-    from paper.broker import TestnetBroker
-    broker = TestnetBroker(leverage=1)
+    broker = make_broker(testnet=True, spot=spot)
     info = broker.preflight()
-    print("=== TESTNET preflight ===")
+    print(f"=== TESTNET preflight ({broker.name}) ===")
     print(f"Подключение OK. Баланс USDT: {info['usdt']:.2f} | рынков загружено: {info['markets']}")
     if info["usdt"] <= 0:
-        print("ВНИМАНИЕ: нулевой баланс. На testnet.binancefuture.com нажмите "
-              "'Perpetual Futures' и пополните тестовый баланс (кнопка faucet).")
+        if spot:
+            print("ВНИМАНИЕ: нулевой баланс. На testnet.binance.vision баланс выдаётся "
+                  "автоматически при входе; если пусто — обновите страницу/перевойдите.")
+        else:
+            print("ВНИМАНИЕ: нулевой баланс. На testnet.binancefuture.com нажмите "
+                  "'Perpetual Futures' и пополните тестовый баланс (кнопка faucet).")
     else:
-        print("Готово к запуску: python run_paper.py --live --testnet")
+        print(f"Готово к запуску: python run_paper.py --live --testnet{' --spot' if spot else ''}")
 
 
-def run_live(cfg: PaperConfig, testnet: bool):
+def run_live(cfg: PaperConfig, testnet: bool, spot: bool = False):
     import ccxt
-    pub = ccxt.binanceusdm({"enableRateLimit": True})
-    broker = make_broker(testnet)
+    # публичные данные — с мейннета соответствующего сегмента (без ключей)
+    pub = (ccxt.binance if spot else ccxt.binanceusdm)({"enableRateLimit": True})
+    broker = make_broker(testnet, spot=spot)
     eng = PaperEngine(cfg, broker)
     if os.path.exists(STATE_PATH):
         state_mod.load(eng, STATE_PATH)
@@ -154,13 +162,15 @@ def main():
     ap.add_argument("--once", action="store_true", help="офлайн-реплей по кэшу (демо)")
     ap.add_argument("--live", action="store_true", help="живой цикл на публичных данных")
     ap.add_argument("--testnet", action="store_true", help="реальные ордера на Binance testnet")
+    ap.add_argument("--spot", action="store_true",
+                    help="спотовый testnet (testnet.binance.vision) вместо фьючерсного; с --live/--check")
     ap.add_argument("--check", action="store_true", help="предполётная проверка testnet (без сделок)")
     args = ap.parse_args()
     cfg = PaperConfig()
     if args.check:
-        run_check()
+        run_check(spot=args.spot)
     elif args.live:
-        run_live(cfg, args.testnet)
+        run_live(cfg, args.testnet, spot=args.spot)
     else:
         run_once(cfg)
 

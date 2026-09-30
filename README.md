@@ -540,9 +540,10 @@ python run_paper.py --once
 python run_paper.py --live
 
 # 3) живой цикл с РЕАЛЬНЫМИ ордерами на Binance TESTNET (нужны ключи)
-export BINANCE_TESTNET_KEY=...      # ключи создаёте ВЫ на testnet.binancefuture.com
-export BINANCE_TESTNET_SECRET=...   # права: только фьючерсы, БЕЗ вывода средств
-python run_paper.py --live --testnet
+export BINANCE_TESTNET_KEY=...      # ключи создаёте ВЫ (см. TESTNET.md)
+export BINANCE_TESTNET_SECRET=...   # права: только торговля, БЕЗ вывода средств
+python run_paper.py --live --testnet          # фьючерсный testnet
+python run_paper.py --live --testnet --spot   # СПОТОВЫЙ testnet (testnet.binance.vision, вход через GitHub)
 ```
 
 Что делает движок (`paper/engine.py`) на каждом закрытом 1h-баре:
@@ -565,7 +566,7 @@ python run_paper.py --live --testnet
 Чат+13 видео → пересказ → ТЗ → прототип ICT (edge≈0 на OOS) → разведка данных →
 **mean-reversion** (реальный OOS-edge ~+0.12–0.15%/сделку) → maker-вход (издержки
 закрыты) → фильтр монет (не нужен) → стоп (только катастроф) → портфельный риск
-(контроли вредят) → **paper на testnet**. 43 теста, всё офлайн-воспроизводимо.
+(контроли вредят) → **paper на testnet**. 53 теста, всё офлайн-воспроизводимо.
 
 ### Известные упрощения прототипа (для M3+)
 - Вход по рынку на баре подтверждения (полная версия — лимитка от LTF-блока).
