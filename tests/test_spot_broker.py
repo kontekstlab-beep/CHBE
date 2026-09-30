@@ -4,10 +4,10 @@ FakeExchange имитирует минимальный интерфейс ccxt-�
 sandbox-режим, рынки с лимитами, создание/отмену/опрос ордеров, баланс.
 """
 import logging
+import sys
+import types
 
 import pytest
-
-import ccxt
 
 from paper.broker import SpotTestnetBroker, TestnetBroker
 
@@ -77,17 +77,26 @@ class FakeExchange:
 
 
 @pytest.fixture
-def fake_spot(monkeypatch):
+def fake_ccxt(monkeypatch):
+    """Поддельный модуль ccxt: в CI ccxt не установлен (импортируется лениво
+    внутри брокеров), поэтому подсовываем модуль-заглушку через sys.modules."""
+    mod = types.ModuleType("ccxt")
+    mod.binance = FakeExchange
+    mod.binanceusdm = FakeExchange
+    monkeypatch.setitem(sys.modules, "ccxt", mod)
+    return mod
+
+
+@pytest.fixture
+def fake_spot(fake_ccxt, monkeypatch):
     """SpotTestnetBroker на FakeExchange вместо ccxt.binance (без ключей сети)."""
-    monkeypatch.setattr(ccxt, "binance", FakeExchange)
     monkeypatch.setenv("BINANCE_TESTNET_KEY", "k")
     monkeypatch.setenv("BINANCE_TESTNET_SECRET", "s")
     broker = SpotTestnetBroker(log=logging.getLogger("test"))
     return broker
 
 
-def test_spot_requires_keys(monkeypatch):
-    monkeypatch.setattr(ccxt, "binance", FakeExchange)
+def test_spot_requires_keys(fake_ccxt, monkeypatch):
     monkeypatch.delenv("BINANCE_TESTNET_KEY", raising=False)
     monkeypatch.delenv("BINANCE_TESTNET_SECRET", raising=False)
     with pytest.raises(RuntimeError, match="testnet\\.binance\\.vision"):
@@ -149,9 +158,8 @@ def test_spot_preflight_and_equity(fake_spot):
     assert fake_spot.equity() == 1000.0
 
 
-def test_futures_broker_keeps_reduceonly(monkeypatch):
+def test_futures_broker_keeps_reduceonly(fake_ccxt, monkeypatch):
     """Регрессия: фьючерсный TestnetBroker по-прежнему шлёт reduceOnly и плечо."""
-    monkeypatch.setattr(ccxt, "binanceusdm", FakeExchange)
     monkeypatch.setenv("BINANCE_TESTNET_KEY", "k")
     monkeypatch.setenv("BINANCE_TESTNET_SECRET", "s")
     broker = TestnetBroker(leverage=1, log=logging.getLogger("test"))
@@ -162,8 +170,7 @@ def test_futures_broker_keeps_reduceonly(monkeypatch):
     assert broker.ex.leverage == 1                  # плечо выставлено
 
 
-def test_futures_requires_keys(monkeypatch):
-    monkeypatch.setattr(ccxt, "binanceusdm", FakeExchange)
+def test_futures_requires_keys(fake_ccxt, monkeypatch):
     monkeypatch.delenv("BINANCE_TESTNET_KEY", raising=False)
     monkeypatch.delenv("BINANCE_TESTNET_SECRET", raising=False)
     with pytest.raises(RuntimeError, match="testnet\\.binancefuture\\.com"):
