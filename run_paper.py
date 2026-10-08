@@ -101,6 +101,24 @@ def run_check(spot: bool = False):
         print(f"Готово к запуску: python run_paper.py --live --testnet{' --spot' if spot else ''}")
 
 
+def seed_from_history(eng: PaperEngine, symbol: str, closed_history, keep: int) -> int:
+    """Прогрев состояния символа из истории ЗАКРЫТЫХ баров (без торговли).
+
+    Иначе на live первые sma_n баров (~2 суток на 1h) z-score не считается
+    и сигналов нет. Вызывать до step(); при непустом стейте — no-op.
+    closed_history — список ohlcv-строк [ts, o, h, l, c, ...] без последнего
+    (обрабатываемого step'ом) закрытого бара.
+    """
+    st = eng._st(symbol)
+    if st.bar:
+        return 0
+    hist = closed_history[-keep:]
+    st.closes.extend(b[4] for b in hist)
+    st.lows.extend(b[3] for b in hist)
+    st.bar = len(hist)
+    return len(hist)
+
+
 def run_live(cfg: PaperConfig, testnet: bool, spot: bool = False):
     import ccxt
     # публичные данные — с мейннета соответствующего сегмента (без ключей)
@@ -138,6 +156,10 @@ def run_live(cfg: PaperConfig, testnet: bool, spot: bool = False):
                     candle = dict(ts=closed[0], o=closed[1], h=closed[2], l=closed[3], c=closed[4])
                     if candle["ts"] == last_ts.get(s):
                         continue
+                    if not eng.states.get(s) or eng.states[s].bar == 0:
+                        seeded = seed_from_history(eng, s, ohlcv[:-2], cfg.sma_n + 5)
+                        if seeded:
+                            logging.info("%s прогрев из истории: %d баров", s, seeded)
                     last_ts[s] = candle["ts"]
                     eng.step(s, candle)
                 except Exception as e:  # pragma: no cover
