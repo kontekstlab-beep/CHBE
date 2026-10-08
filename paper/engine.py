@@ -158,3 +158,35 @@ class PaperEngine:
         open_pos = sum(1 for s in self.states.values() if s.position is not None)
         return dict(trades=n, wins=wins, winrate=(wins / n * 100 if n else 0),
                     pnl=pnl, equity=self.equity, open_positions=open_pos)
+
+
+def reconcile(eng: PaperEngine, broker, log=None) -> None:
+    """Сверка стейта с биржей (после рестарта, ручных действий, сброса testnet).
+
+    None от брокера («неизвестно», ошибка запроса) -> стейт НЕ трогаем. Иначе:
+    - pending-лимитка, которой нет среди открытых на бирже, -> снимается со стейта;
+    - лимит-продажа позиции, которой нет на бирже, -> забывается (перевыставится
+      движком при следующей смене цели);
+    - позиция, по которой на бирже нет base-актива (held < 10% от qty), ->
+      снимается БЕЗ сделки (reconcile-drop): продавать нечего, сделка не журналируется.
+    """
+    log = log or logging.getLogger("paper")
+    for sym, st in eng.states.items():
+        if st.pending is not None or (st.position is not None and st.position.sell_oid is not None):
+            oids = broker.open_order_ids_on_exchange(sym)
+            if oids is not None:
+                if st.pending is not None and str(st.pending.oid) not in oids:
+                    log.warning("%s reconcile: лимитка %s отсутствует на бирже -> снята со стейта",
+                                sym, st.pending.oid)
+                    st.pending = None
+                if st.position is not None and st.position.sell_oid is not None \
+                        and str(st.position.sell_oid) not in oids:
+                    log.warning("%s reconcile: лимит-продажа %s отсутствует на бирже -> "
+                                "забыта (перевыставится при смене цели)", sym, st.position.sell_oid)
+                    st.position.sell_oid = None
+        if st.position is not None:
+            held = broker.held_qty(sym)
+            if held is not None and held < 0.1 * st.position.qty:
+                log.warning("%s reconcile: позиция %.6f в стейте, на бирже актива %.6f -> "
+                            "позиция снята БЕЗ сделки", sym, st.position.qty, held)
+                st.position = None

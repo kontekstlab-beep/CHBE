@@ -58,6 +58,13 @@ class DryRunBroker:
     def open_order_ids(self, symbol) -> List[int]:
         return [oid for oid, o in self._orders.items() if o["symbol"] == symbol]
 
+    # reconcile не применим: «биржа» — этот же объект, расхождений не бывает
+    def open_order_ids_on_exchange(self, symbol):
+        return None
+
+    def held_qty(self, symbol):
+        return None
+
 
 class _CcxtTestnetBroker:
     """Общие механики работы с testnet-биржей через ccxt (фьючерсы и спот).
@@ -71,6 +78,10 @@ class _CcxtTestnetBroker:
         exchange_opts — dict для параметра options (или None)
         keys_hint     — сайт, где получить ключи (для сообщения об ошибке)
     и могут переопределить хуки _prepare/_sell_params/_close_params.
+
+    Mainnet-брокер в проекте ОТСУТСТВУЕТ НАМЕРЕННО: переход на реальные деньги
+    должен быть осознанным изменением кода, а не флагом. Поэтому после
+    set_sandbox_mode(True) стоит жёсткая проверка, что API URL — тестнетовый.
     """
     name = "testnet"
     exchange_id = None
@@ -94,6 +105,12 @@ class _CcxtTestnetBroker:
             cfg["options"] = self.exchange_opts
         self.ex = getattr(ccxt, self.exchange_id)(cfg)
         self.ex.set_sandbox_mode(True)  # TESTNET
+        api_urls = str(self.ex.urls.get("api", ""))
+        if "testnet" not in api_urls:
+            raise RuntimeError(
+                f"СТОП: {self.exchange_id} НЕ в sandbox-режиме (api={api_urls}). "
+                "Это значило бы торговлю РЕАЛЬНЫМИ деньгами. Mainnet-брокер в проекте "
+                "отсутствует намеренно — не убирайте set_sandbox_mode(True).")
         self.ex.load_markets()
         self._log = log or logging.getLogger("paper")
         self._open: Dict[str, dict] = {}   # order_id -> {symbol, side}
@@ -189,6 +206,20 @@ class _CcxtTestnetBroker:
         bal = self.ex.fetch_balance()
         return dict(usdt=float(bal["USDT"]["total"]), markets=len(self.ex.markets))
 
+    # --- сверка состояния с биржей (reconcile) ---
+    def open_order_ids_on_exchange(self, symbol):
+        """Множество id (строки) открытых ордеров на бирже. None = НЕИЗВЕСТНО
+        (ошибка запроса): reconcile в этом случае не должен трогать стейт."""
+        try:
+            return {str(o["id"]) for o in self.ex.fetch_open_orders(symbol)}
+        except Exception as e:
+            self._log.debug("fetch_open_orders %s: %s", symbol, e)
+            return None
+
+    def held_qty(self, symbol) -> Optional[float]:
+        """Сколько base-актива реально есть. None = неизвестно."""
+        raise NotImplementedError
+
 
 class TestnetBroker(_CcxtTestnetBroker):
     """Реальные ордера на Binance USDT-M Futures TESTNET через ccxt."""
@@ -220,6 +251,17 @@ class TestnetBroker(_CcxtTestnetBroker):
     def _close_params(self):
         return {"reduceOnly": True}
 
+    def held_qty(self, symbol) -> Optional[float]:
+        """Размер фьючерсной позиции по символу (abs). None = неизвестно."""
+        try:
+            for p in self.ex.fetch_positions([symbol]):
+                if p.get("symbol") == symbol:
+                    return abs(float(p.get("contracts") or 0.0))
+            return 0.0
+        except Exception as e:
+            self._log.debug("held_qty %s: %s", symbol, e)
+            return None
+
 
 class SpotTestnetBroker(_CcxtTestnetBroker):
     """Реальные ордера на Binance SPOT TESTNET (testnet.binance.vision) через ccxt.
@@ -237,3 +279,13 @@ class SpotTestnetBroker(_CcxtTestnetBroker):
     exchange_id = "binance"
     exchange_opts = None
     keys_hint = "testnet.binance.vision"
+
+    def held_qty(self, symbol) -> Optional[float]:
+        """Свободный баланс base-актива на споте. None = неизвестно."""
+        try:
+            base = self.ex.market(symbol)["base"]
+            bal = self.ex.fetch_balance()
+            return float((bal.get(base) or {}).get("free") or 0.0)
+        except Exception as e:
+            self._log.debug("held_qty %s: %s", symbol, e)
+            return None

@@ -74,7 +74,11 @@ def build_bracket(cfg, candles, side: Side, bos, cur, a, pools):
 
     # 2) стоп-лосс
     if ec.sl_mode == "atr":
-        sl = entry + rc.sl_buffer_atr * a + ec.sl_atr_mult * a * (1 if side == Side.SHORT else -1)
+        # буфер РАСШИРЯЕТ стоп на обеих сторонах: LONG — ниже входа, SHORT — выше.
+        # NB: исторические результаты M3.x считались со СТАРОЙ формулой, где для LONG
+        # буфер СУЖАЛ стоп (стоп был на 2*sl_buffer_atr*a теснее, чем задумано).
+        d = (ec.sl_atr_mult + rc.sl_buffer_atr) * a
+        sl = entry + d if side == Side.SHORT else entry - d
     else:  # block
         sl = hi + rc.sl_buffer_atr * a if side == Side.SHORT else lo - rc.sl_buffer_atr * a
 
