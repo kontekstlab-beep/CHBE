@@ -18,6 +18,7 @@ class FakeExchange:
     def __init__(self, config):
         self.config = config
         self.sandbox = False
+        self.urls = {"api": "https://testnet.binance.vision/api"}
         self.markets = {
             "BTC/USDT": {
                 "symbol": "BTC/USDT",
@@ -156,6 +157,20 @@ def test_spot_preflight_and_equity(fake_spot):
     info = fake_spot.preflight()
     assert info["usdt"] == 1000.0 and info["markets"] == 1
     assert fake_spot.equity() == 1000.0
+
+
+def test_mainnet_url_refused(fake_ccxt, monkeypatch):
+    """Предохранитель: если URL биржи не testnet (sandbox убрали/сломали) — RuntimeError."""
+    class MainnetFake(FakeExchange):
+        def __init__(self, config):
+            super().__init__(config)
+            self.urls = {"api": "https://api.binance.com/api"}
+
+    fake_ccxt.binance = MainnetFake
+    monkeypatch.setenv("BINANCE_TESTNET_KEY", "k")
+    monkeypatch.setenv("BINANCE_TESTNET_SECRET", "s")
+    with pytest.raises(RuntimeError, match="РЕАЛЬНЫМИ"):
+        SpotTestnetBroker()
 
 
 def test_futures_broker_keeps_reduceonly(fake_ccxt, monkeypatch):

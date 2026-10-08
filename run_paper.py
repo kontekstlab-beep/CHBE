@@ -24,7 +24,7 @@ import time
 
 from paper.broker import DryRunBroker
 from paper.config import PaperConfig
-from paper.engine import PaperEngine
+from paper.engine import PaperEngine, reconcile
 from paper import state as state_mod
 
 # пути настраиваются через окружение (для монтирования тома на VPS)
@@ -117,12 +117,18 @@ def run_live(cfg: PaperConfig, testnet: bool, spot: bool = False):
             logging.info("баланс testnet: %.2f USDT", eng.equity)
         except Exception as e:
             logging.warning("не удалось получить баланс testnet: %s", e)
+        # сверка стейта с биржей при старте (рестарт/даунтайм/сброс testnet)
+        reconcile(eng, broker)
     last_ts = {s: (eng.states[s].__dict__.get("_last_ts") if s in eng.states else 0) for s in cfg.symbols}
 
     logging.info("LIVE старт | брокер=%s | монет=%d | state=%s", broker.name, len(cfg.symbols), STATE_PATH)
     tf_ms = 3_600_000
+    iters = 0
     while True:
         try:
+            iters += 1
+            if testnet and iters % 24 == 0:   # self-healing раз в сутки (часовой цикл)
+                reconcile(eng, broker)
             for s in cfg.symbols:
                 try:
                     ohlcv = pub.fetch_ohlcv(s, cfg.timeframe, limit=cfg.sma_n + 6)
