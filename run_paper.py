@@ -176,6 +176,24 @@ def run_live(cfg: PaperConfig, testnet: bool, spot: bool = False):
         time.sleep(max(30, sleep_s))
 
 
+def check_btc_filter_setup(cfg: PaperConfig) -> None:
+    """Проверка конфигурации BTC-фильтра (C6) при старте.
+
+    Требование: btc_symbol должен быть в корзине и степаться ПЕРВЫМ — тогда его
+    closes содержат текущий бар к моменту шага остальных монет (см. engine).
+    Иначе фильтр деградирует в «пропускать» (поведение baseline) — не падать.
+    """
+    if not cfg.use_btc_filter:
+        return
+    if cfg.btc_symbol not in cfg.symbols:
+        logging.warning("BTC-фильтр включён, но %s нет в корзине symbols -> "
+                        "гейт всегда «пропускать» (поведение baseline)", cfg.btc_symbol)
+    elif cfg.symbols[0] != cfg.btc_symbol:
+        logging.warning("BTC-фильтр: %s не первый в symbols — гейт будет использовать "
+                        "z BTC с ПРОШЛОГО бара; рекомендуется поставить его первым",
+                        cfg.btc_symbol)
+
+
 def main():
     from logging.handlers import RotatingFileHandler
     for p in (LOG_PATH, STATE_PATH):          # создать каталоги, если задан вложенный путь
@@ -195,6 +213,7 @@ def main():
     ap.add_argument("--check", action="store_true", help="предполётная проверка testnet (без сделок)")
     args = ap.parse_args()
     cfg = PaperConfig()
+    check_btc_filter_setup(cfg)
     if args.check:
         run_check(spot=args.spot)
     elif args.live:
