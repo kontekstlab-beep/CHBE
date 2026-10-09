@@ -2,10 +2,17 @@
 
 Схема на каждый закрытый бар символа:
   1) sync брокера -> обработать исполнения (buy fill -> открыть позицию + выставить
-     лимит-продажу на среднем; sell fill -> зафиксировать возврат к среднему);
+     лимит-продажу на среднем; buy fill лесенки -> усреднить позицию; sell fill ->
+     зафиксировать возврат к среднему);
   2) сопровождение позиции: стоп/тайм-выход (market), иначе обновить цель = SMA;
-  3) новый вход: z<entry_z и нет позиции/лимитки -> maker-лимитка на покупку;
-  4) отмена «протухшей» лимитки после fill_window баров.
+     при z < ladder_z — лесенка (вторая порция, C6), один раз за позицию;
+  3) новый вход: z<entry_z, гейт BTC-контекста (C6), нет позиции/лимитки ->
+     maker-лимитка на покупку;
+  4) отмена «протухших» лимиток после fill_window баров (вход и лесенка).
+
+C6 (M6_RESEARCH.md): baseline + лесенка при z<-3 + фильтр входа по z48(BTC)<-1.
+BTC должен степаться ПЕРВЫМ в cfg.symbols — тогда его closes содержат текущий
+бар к моменту шага остальных монет. При недостатке данных BTC гейт не блокирует.
 
 Логика сигнала — из paper.signal (общая с бэктестом).
 """
@@ -16,7 +23,7 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 
 from .config import PaperConfig
-from .signal import entry_signal, exit_signal, sma, zscore
+from .signal import btc_gate, entry_signal, exit_signal, sma, zscore
 
 log = logging.getLogger("paper")
 
@@ -28,6 +35,7 @@ class Position:
     entry_bar: int
     sell_oid: Optional[int] = None
     target: float = 0.0
+    ladder_used: bool = False      # вторая порция (C6) уже добавлялась
 
 
 @dataclass
@@ -44,6 +52,7 @@ class SymbolState:
     bar: int = 0
     position: Optional[Position] = None
     pending: Optional[Pending] = None
+    pending_ladder: Optional[Pending] = None   # лесеночная лимитка (C6)
 
 
 @dataclass
@@ -67,6 +76,18 @@ class PaperEngine:
     def _st(self, symbol) -> SymbolState:
         return self.states.setdefault(symbol, SymbolState())
 
+    def _btc_ok(self) -> bool:
+        """Гейт BTC-контекста (C6). BTC степается первым в cfg.symbols, поэтому
+        его closes уже содержат ТЕКУЩИЙ бар к моменту шага других монет.
+        Нет/мало данных BTC -> НЕ блокируем (деградация в baseline)."""
+        cfg = self.cfg
+        if not cfg.use_btc_filter:
+            return True
+        bst = self.states.get(cfg.btc_symbol)
+        if bst is None:
+            return True
+        return btc_gate(bst.closes, cfg.sma_n, cfg.btc_filter_z)
+
     def step(self, symbol: str, candle: dict) -> None:
         """candle = {ts, o, h, l, c}. Должен быть ЗАКРЫТЫМ баром."""
         cfg = self.cfg
@@ -88,9 +109,9 @@ class PaperEngine:
         if st.position is not None:
             self._manage(symbol, st, candle)
 
-        # 3) новый вход
+        # 3) новый вход (с гейтом BTC-контекста, C6)
         if st.position is None and st.pending is None:
-            if entry_signal(st.closes, cfg.sma_n, cfg.entry_z):
+            if entry_signal(st.closes, cfg.sma_n, cfg.entry_z) and self._btc_ok():
                 price = candle["c"]
                 qty = (self.equity * cfg.size_frac) / price
                 oid = self.broker.place_limit_buy(symbol, price, qty)
@@ -98,15 +119,26 @@ class PaperEngine:
                     st.pending = Pending(oid, price, st.bar)
                     log.info("%s ВХОД лимитка @%.6f qty=%.6f (z<%.1f)", symbol, price, qty, cfg.entry_z)
 
-        # 4) отмена протухшей лимитки
+        # 4) отмена протухших лимиток (вход и лесенка — одинаковый TTL)
         if st.pending is not None and (st.bar - st.pending.placed_bar) > cfg.fill_window:
             self.broker.cancel(symbol, st.pending.oid)
             log.info("%s лимитка отменена (не исполнилась за %d баров)", symbol, cfg.fill_window)
             st.pending = None
+        if st.pending_ladder is not None:
+            if st.position is None:
+                # сирота: позиция закрылась до филла лесенки -> отменить
+                self.broker.cancel(symbol, st.pending_ladder.oid)
+                st.pending_ladder = None
+            elif (st.bar - st.pending_ladder.placed_bar) > cfg.fill_window:
+                self.broker.cancel(symbol, st.pending_ladder.oid)
+                log.info("%s лесенка отменена (не исполнилась за %d баров)", symbol, cfg.fill_window)
+                st.pending_ladder = None
 
     def _on_fill(self, symbol, st: SymbolState, f: dict):
         cfg = self.cfg
-        if f["side"] == "buy" and st.pending is not None:
+        oid = f.get("order_id")
+        if f["side"] == "buy" and st.pending is not None \
+                and (oid is None or oid == st.pending.oid):
             # открыли позицию; ставим лимит-продажу на среднем (maker reversion-выход)
             entry = f["price"]
             target = sma(st.closes, cfg.sma_n) or entry
@@ -115,6 +147,23 @@ class PaperEngine:
                                    sell_oid=sell_oid, target=target)
             st.pending = None
             log.info("%s ПОЗИЦИЯ открыта @%.6f, цель=%.6f", symbol, entry, target)
+        elif f["side"] == "buy" and st.pending_ladder is not None \
+                and (oid is None or oid == st.pending_ladder.oid):
+            # лесенка (C6): усреднение и перевыставление продажи на полный qty
+            p = st.position
+            st.pending_ladder = None
+            if p is None:                      # позиции уже нет — игнорируем (страховка)
+                log.warning("%s лесенка исполнилась без позиции — пропуск", symbol)
+                return
+            p.ladder_used = True
+            new_qty = p.qty + f["qty"]
+            p.entry = (p.entry * p.qty + f["price"] * f["qty"]) / new_qty
+            p.qty = new_qty
+            if p.sell_oid is not None:
+                self.broker.cancel(symbol, p.sell_oid)
+            p.sell_oid = self.broker.place_limit_sell(symbol, p.target, p.qty)
+            log.info("%s ЛЕСЕНКА @%.6f: усреднение entry=%.6f qty=%.6f",
+                     symbol, f["price"], p.entry, p.qty)
         elif f["side"] == "sell" and st.position is not None:
             self._close(symbol, st, f["price"], f.get("maker", True), "reversion")
 
@@ -137,10 +186,24 @@ class PaperEngine:
                     self.broker.cancel(symbol, p.sell_oid)
                 p.sell_oid = self.broker.place_limit_sell(symbol, new_t, p.qty)
                 p.target = new_t
+            # лесенка (C6): вторая порция при z < ladder_z, один раз за позицию
+            if not p.ladder_used and st.pending_ladder is None and cfg.ladder_frac > 0:
+                z = zscore(st.closes, cfg.sma_n)
+                if z is not None and z < cfg.ladder_z and self._btc_ok():
+                    price = candle["c"]
+                    qty = (self.equity * cfg.ladder_frac) / price
+                    oid = self.broker.place_limit_buy(symbol, price, qty)
+                    if oid is not None:
+                        st.pending_ladder = Pending(oid, price, st.bar)
+                        log.info("%s ЛЕСЕНКА лимитка @%.6f qty=%.6f (z=%.2f<%.1f)",
+                                 symbol, price, qty, z, cfg.ladder_z)
 
     def _close(self, symbol, st: SymbolState, exit_px: float, exit_maker: bool, reason: str):
         cfg = self.cfg
         p = st.position
+        if st.pending_ladder is not None:      # лесенка не успела исполниться -> отмена
+            self.broker.cancel(symbol, st.pending_ladder.oid)
+            st.pending_ladder = None
         fee_in = cfg.maker_fee                      # вход всегда maker-лимитка
         fee_out = cfg.maker_fee if exit_maker else cfg.taker_fee
         pnl = p.qty * (exit_px - p.entry) - p.qty * (p.entry * fee_in + exit_px * fee_out)
@@ -164,7 +227,8 @@ def reconcile(eng: PaperEngine, broker, log=None) -> None:
     """Сверка стейта с биржей (после рестарта, ручных действий, сброса testnet).
 
     None от брокера («неизвестно», ошибка запроса) -> стейт НЕ трогаем. Иначе:
-    - pending-лимитка, которой нет среди открытых на бирже, -> снимается со стейта;
+    - pending-лимитка (вход или лесенка), которой нет среди открытых на бирже,
+      -> снимается со стейта;
     - лимит-продажа позиции, которой нет на бирже, -> забывается (перевыставится
       движком при следующей смене цели);
     - позиция, по которой на бирже нет base-актива (held < 10% от qty), ->
@@ -172,13 +236,18 @@ def reconcile(eng: PaperEngine, broker, log=None) -> None:
     """
     log = log or logging.getLogger("paper")
     for sym, st in eng.states.items():
-        if st.pending is not None or (st.position is not None and st.position.sell_oid is not None):
+        if st.pending is not None or st.pending_ladder is not None \
+                or (st.position is not None and st.position.sell_oid is not None):
             oids = broker.open_order_ids_on_exchange(sym)
             if oids is not None:
                 if st.pending is not None and str(st.pending.oid) not in oids:
                     log.warning("%s reconcile: лимитка %s отсутствует на бирже -> снята со стейта",
                                 sym, st.pending.oid)
                     st.pending = None
+                if st.pending_ladder is not None and str(st.pending_ladder.oid) not in oids:
+                    log.warning("%s reconcile: лесенка %s отсутствует на бирже -> снята со стейта",
+                                sym, st.pending_ladder.oid)
+                    st.pending_ladder = None
                 if st.position is not None and st.position.sell_oid is not None \
                         and str(st.position.sell_oid) not in oids:
                     log.warning("%s reconcile: лимит-продажа %s отсутствует на бирже -> "

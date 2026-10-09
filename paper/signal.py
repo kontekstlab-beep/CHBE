@@ -29,6 +29,17 @@ def entry_signal(closes: List[float], n: int, entry_z: float) -> bool:
     return z is not None and z < entry_z
 
 
+def btc_gate(closes: List[float], n: int, filter_z: float) -> bool:
+    """Гейт BTC-контекста (C6): True = вход/лесенка разрешены.
+
+    Разрешено, когда z(BTC) < filter_z (толпа падает вместе — лучшие входы,
+    см. M6-E). При недостатке данных (z is None) НЕ блокируем — поведение
+    baseline; это осознанная деградация, задокументирована в M6_RESEARCH.md.
+    """
+    z = zscore(closes, n)
+    return z is None or z < filter_z
+
+
 def exit_signal(closes: List[float], n: int, exit_z: float,
                 bars_held: int, max_hold: int,
                 entry_price: float, last_low: float, stop_frac: float) -> Optional[str]:

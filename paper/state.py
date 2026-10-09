@@ -22,6 +22,7 @@ def save(engine: PaperEngine, path: str) -> None:
                 "closes": s.closes, "lows": s.lows, "bar": s.bar,
                 "position": asdict(s.position) if s.position else None,
                 "pending": asdict(s.pending) if s.pending else None,
+                "pending_ladder": asdict(s.pending_ladder) if s.pending_ladder else None,
             } for sym, s in engine.states.items()
         },
     }
@@ -38,7 +39,11 @@ def load(engine: PaperEngine, path: str) -> None:
     for sym, s in data.get("states", {}).items():
         st = SymbolState(closes=s["closes"], lows=s["lows"], bar=s["bar"])
         if s.get("position"):
-            st.position = Position(**s["position"])
+            # старые стейты без ladder_used -> значение по умолчанию (False)
+            st.position = Position(**{k: v for k, v in s["position"].items()
+                                      if k in Position.__dataclass_fields__})
         if s.get("pending"):
             st.pending = Pending(**s["pending"])
+        if s.get("pending_ladder"):
+            st.pending_ladder = Pending(**s["pending_ladder"])
         engine.states[sym] = st
