@@ -77,6 +77,7 @@ class Cfg:
     vol_z: Optional[float] = None      # входить только при всплеске объёма z > vol_z
     knife: bool = False                # запрет при ускоряющемся падении
     hours: Optional[set] = None        # разрешённые часы UTC (None = все)
+    ladder_hours: bool = False         # True -> часовой фильтр действует и на лесенку
     fee_model: str = "FUTURES"
     flat_fee: Optional[float] = None   # если задано — плоская комиссия за сторону
 
@@ -91,6 +92,8 @@ class Trade:
     gross: float    # доходность до комиссий
     fees: float     # суммарные комиссии (round-trip, в долях)
     net: float      # gross - fees
+    mfe: float = 0.0   # макс. благоприятное отклонение за жизнь сделки (доли)
+    mae: float = 0.0   # макс. неблагоприятное отклонение (доли, <= 0)
 
 
 def hour_of(ts_ms: int) -> int:
@@ -217,9 +220,17 @@ def backtest_coin(d: dict, cfg: Cfg) -> List[Trade]:
         partial_px = None
         exit_px = None
         reason = None
+        mfe = mae = 0.0
         k = entry_bar + 1
         while k < L:
             zk = z[k]
+            # MFE/MAE относительно текущего (усредняемого) entry
+            if long:
+                mfe = max(mfe, hi[k] / entry - 1)
+                mae = min(mae, lo[k] / entry - 1)
+            else:
+                mfe = max(mfe, entry / lo[k] - 1)
+                mae = min(mae, entry / hi[k] - 1)
             if cfg.stop > 0:
                 if long and lo[k] <= entry * (1 - cfg.stop):
                     exit_px, reason = entry * (1 - cfg.stop), "stop"
@@ -238,6 +249,9 @@ def backtest_coin(d: dict, cfg: Cfg) -> List[Trade]:
                     add_limit = None
                 deep = (zk is not None and zk < cfg.ladder_z) if long \
                     else (zk is not None and zk > -cfg.ladder_z)
+                if cfg.ladder_hours and cfg.hours is not None \
+                        and hour_of(ts[k]) not in cfg.hours:
+                    deep = False
                 if deep and portions < 2:
                     add_limit = c[k]
             # частичная фиксация 50%
@@ -263,7 +277,7 @@ def backtest_coin(d: dict, cfg: Cfg) -> List[Trade]:
             gross = 0.5 * pg + 0.5 * gross
         fees = _fees(cfg, reason, partial_px is not None)
         trades.append(Trade(d["sym"], entry_bar, k, hour_of(ts[i]), reason,
-                            gross, fees, gross - fees))
+                            gross, fees, gross - fees, mfe, mae))
         i = k + 1
     return trades
 

@@ -1,0 +1,17 @@
+PEPE     DOWNLOAD FAILED: binanceusdm does not have market symbol PEPE/USDT -> skip
+WIF      saved 4000 bars -> data\WIFUSDT_1h_4000.csv
+BONK     DOWNLOAD FAILED: binanceusdm does not have market symbol BONK/USDT -> skip
+FLOKI    DOWNLOAD FAILED: binanceusdm does not have market symbol FLOKI/USDT -> skip
+JUP      saved 4000 bars -> data\JUPUSDT_1h_4000.csv
+PYTH     saved 4000 bars -> data\PYTHUSDT_1h_4000.csv
+JTO      saved 4000 bars -> data\JTOUSDT_1h_4000.csv
+WLD      saved 4000 bars -> data\WLDUSDT_1h_4000.csv
+STX      saved 4000 bars -> data\STXUSDT_1h_4000.csv
+KAS      saved 4000 bars -> data\KASUSDT_1h_4000.csv
+LDO      saved 4000 bars -> data\LDOUSDT_1h_4000.csv
+MKR      saved 4000 bars -> data\MKRUSDT_1h_4000.csv
+ETHFI    saved 4000 bars -> data\ETHFIUSDT_1h_4000.csv
+ENA      saved 4000 bars -> data\ENAUSDT_1h_4000.csv
+AUCTION  saved 4000 bars -> data\AUCTIONUSDT_1h_4000.csv
+
+FRESH12v2 = ['WIF', 'JUP', 'PYTH', 'JTO', 'WLD', 'STX', 'KAS', 'LDO', 'MKR', 'ETHFI', 'ENA', 'AUCTION']

@@ -1,0 +1,56 @@
+C6 trades on EXPL18: 940
+=== M7-2A. Day clustering of bad-hour trades (hours 1,6 UTC) ===
+bad-hour trades: n=71 on 19 distinct days, total P&L = -91.13 (sum of per-trade net fractions)
+worst 3 days contribute -61.42 (67% of total bad-hour P&L)
+negative days: 13/19
+worst 8 days (date, n, P&L%):
+  2026-06-04 n= 15 pnl= -30.38
+  2026-10-07 n= 10 pnl= -15.77
+  2026-06-05 n=  5 pnl= -15.27
+  2026-09-28 n=  7 pnl=  -9.11
+  2026-06-23 n=  9 pnl=  -8.42
+  2026-06-02 n=  3 pnl=  -5.28
+  2026-06-01 n=  4 pnl=  -3.50
+  2026-05-18 n=  4 pnl=  -2.67
+
+=== M7-2B. Multiple comparisons ===
+permutation test (10000 shuffles): observed min per-hour mean = -1.414%
+  p-value = 0/10000 = 0.0000 (fraction of shuffles with an equally bad hour)
+hours {1,6} vs rest: n=71 vs 869, mean -1.284% vs +0.610%, t=-8.97, p_raw~1.43e-19, Bonferroni x24 = 3.43e-18
+
+=== M7-2C. Mechanism ===
+-- (a) funding hypothesis (funding at 00/08/16 UTC): net%/trade by window --
+  bad {1,6}              n=  71 net= -1.284% win= 16.9%
+  post-fund00 {0,1,2}    n=  82 net= -0.472% win= 34.1%
+  post-fund08 {8,9,10}   n=  75 net= +0.525% win= 64.0%
+  post-fund16 {16,17,18} n= 112 net= +0.530% win= 59.8%
+  rest                   n= 869 net= +0.610% win= 60.2%
+-- (b) liquidity: mean relative volume and range% by hour (EXPL18) --
+   hr  relvol  range%
+    0    0.93   1.081
+    1    0.95   1.219 <-- BAD
+    2    0.94   1.171
+    3    0.86   1.050
+    4    0.86   1.064
+    5    0.91   1.140
+    6    0.88   1.004 <-- BAD
+    7    0.92   1.037
+    8    0.98   1.057
+    9    0.96   1.036
+   10    0.89   0.994
+   11    0.85   0.964
+   12    1.19   1.229
+   13    1.42   1.385
+   14    1.59   1.536
+   15    1.50   1.449
+   16    1.37   1.297
+   17    1.08   1.191
+   18    1.01   1.169
+   19    0.85   1.034
+   20    0.80   1.022
+   21    0.75   1.109
+   22    0.82   1.094
+   23    0.73   0.951
+-- (c) exit mix and MFE/MAE profile --
+  bad {1,6}  n=  71 | stops= 1.4% time=95.8% rev= 2.8% | MFE avg= +1.40% med= +0.78% | MAE avg= -2.66% med= -2.52% | bounce>0.5% but closed red: 45.1%
+  rest       n= 869 | stops= 0.1% time=84.2% rev=15.7% | MFE avg= +1.89% med= +1.48% | MAE avg= -1.37% med= -1.01% | bounce>0.5% but closed red: 22.7%
