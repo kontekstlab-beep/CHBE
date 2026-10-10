@@ -1,0 +1,16 @@
+=== M7-3. Filter design on EXPL18 ===
+F0 C6 no filter      [FUTURES ] n= 940 win= 56.9% net=+0.467% pf= 1.85 med=+0.414% P&L=+21.94% MDD= 4.07% worst= -8.07%
+F0 C6 no filter      [SPOT_BNB] n= 940 win= 55.2% net=+0.382% pf= 1.66 med=+0.330% P&L=+17.97% MDD= 4.63% worst= -8.15%
+    trades vs F0: n=940 (lost 0)
+F1 block {1,6}       [FUTURES ] n= 920 win= 58.8% net=+0.533% pf= 2.07 med=+0.460% P&L=+24.52% MDD= 2.75% worst= -8.07%
+F1 block {1,6}       [SPOT_BNB] n= 920 win= 56.8% net=+0.449% pf= 1.84 med=+0.376% P&L=+20.64% MDD= 3.19% worst= -8.15%
+    trades vs F0: n=920 (lost 20)
+F2 block {1,6,19}    [FUTURES ] n= 905 win= 59.3% net=+0.559% pf= 2.13 med=+0.553% P&L=+25.28% MDD= 2.23% worst= -8.07%
+F2 block {1,6,19}    [SPOT_BNB] n= 905 win= 57.5% net=+0.474% pf= 1.90 med=+0.469% P&L=+21.45% MDD= 2.66% worst= -8.15%
+    trades vs F0: n=905 (lost 35)
+F3 F1+ladder too     [FUTURES ] n= 920 win= 58.8% net=+0.532% pf= 2.06 med=+0.466% P&L=+24.46% MDD= 2.75% worst= -8.07%
+F3 F1+ladder too     [SPOT_BNB] n= 920 win= 56.8% net=+0.447% pf= 1.84 med=+0.383% P&L=+20.58% MDD= 3.19% worst= -8.15%
+    trades vs F0: n=920 (lost 20)
+F4 F2+ladder too     [FUTURES ] n= 905 win= 59.3% net=+0.558% pf= 2.13 med=+0.560% P&L=+25.27% MDD= 2.23% worst= -8.07%
+F4 F2+ladder too     [SPOT_BNB] n= 905 win= 57.5% net=+0.474% pf= 1.90 med=+0.476% P&L=+21.45% MDD= 2.66% worst= -8.15%
+    trades vs F0: n=905 (lost 35)

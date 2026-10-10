@@ -1,0 +1,9 @@
+=== M7-4b. FRESH12v2 (2 frozen runs: H1, H2) ===
+FRESH12v2 H1 C6 [SPOT_BNB]                   n= 482 win= 57.5% нетто= +0.533% pf= 1.67 мед= +0.581% худш= -8.15% P&Lпорт= +12.85% MDD= 2.40%
+FRESH12v2 H1 C6 [FUTURES]                    n= 482 win= 59.1% нетто= +0.618% pf= 1.81 мед= +0.665% худш= -8.07% P&Lпорт= +14.89% MDD= 2.15%
+FRESH12v2 H2 C6+no{1,6,19} [SPOT_BNB]        n= 469 win= 57.8% нетто= +0.545% pf= 1.68 мед= +0.683% худш= -8.15% P&Lпорт= +12.78% MDD= 2.67%
+FRESH12v2 H2 C6+no{1,6,19} [FUTURES]         n= 469 win= 59.3% нетто= +0.629% pf= 1.82 мед= +0.767% худш= -8.07% P&Lпорт= +14.76% MDD= 2.43%
+
+paired test across 11 coins (SPOT_BNB): H2-H1 = +0.005 pp/trade, t = +0.12
+economic threshold +0.03pp: FAIL; statistical t>2: FAIL
+VERDICT: hour filter REJECTED on FRESH12v2
