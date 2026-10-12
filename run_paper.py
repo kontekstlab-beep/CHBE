@@ -211,8 +211,13 @@ def main():
     ap.add_argument("--spot", action="store_true",
                     help="спотовый testnet (testnet.binance.vision) вместо фьючерсного; с --live/--check")
     ap.add_argument("--check", action="store_true", help="предполётная проверка testnet (без сделок)")
+    ap.add_argument("--entry-z", type=float, default=None,
+                    help="переопределить порог входа (напр. -1.5 для спарринг-бота; "
+                         "по умолчанию замороженное значение из PaperConfig)")
     args = ap.parse_args()
     cfg = PaperConfig()
+    if args.entry_z is not None:
+        cfg.entry_z = args.entry_z
     check_btc_filter_setup(cfg)
     if args.check:
         run_check(spot=args.spot)
