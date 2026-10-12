@@ -1,0 +1,20 @@
+=== M8-1. Exit audit: C6 on EXPL18 (n=940, net=+0.467%/trade) ===
+
+--- A. MFE vs captured ---
+MFE percentiles: p10=+0.17% p25=+0.65% p50=+1.44% p75=+2.53% p90=+4.11%
+gross captured: mean=+0.532%
+utilization gross/MFE (trades with MFE>0.3%): mean=-5% median=49%
+trades that left >0.5pp on the table (MFE > gross + 0.5pp): 70.2%
+
+--- B. bounce beyond SMA target ---
+reversion exits: 138 (14.7%), time: 800, stop: 2
+reversion exits where price went >0.5pp ABOVE our SMA target: 32/138 = 23.2%
+NON-reversion exits that still saw a >0.3% bounce during life: 683/802 = 85.2%
+
+--- C. time-stop anatomy ---
+time exits: n=800 | green at exit: 51.2% | bounce>0.5% existed but closed red: 27.0% | no bounce at all (MFE<=0.3%): 14.9%
+time exits net: mean=+0.075%
+
+--- D. stop-out aftermath (bounce above entry within 24 bars) ---
+stop exits: n=2 | bounced back above entry within 24h: 0 = 0.0%
+stop exits net: mean=-8.070%

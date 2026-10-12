@@ -1,0 +1,14 @@
+SAND     saved 4000 bars -> data\SANDUSDT_1h_4000.csv
+MANA     saved 4000 bars -> data\MANAUSDT_1h_4000.csv
+ENJ      saved 4000 bars -> data\ENJUSDT_1h_4000.csv
+CHZ      saved 4000 bars -> data\CHZUSDT_1h_4000.csv
+AXS      saved 4000 bars -> data\AXSUSDT_1h_4000.csv
+SUSHI    saved 4000 bars -> data\SUSHIUSDT_1h_4000.csv
+SNX      saved 4000 bars -> data\SNXUSDT_1h_4000.csv
+COMP     saved 4000 bars -> data\COMPUSDT_1h_4000.csv
+LRC      saved 4000 bars -> data\LRCUSDT_1h_4000.csv
+ZIL      saved 4000 bars -> data\ZILUSDT_1h_4000.csv
+QTUM     saved 4000 bars -> data\QTUMUSDT_1h_4000.csv
+DASH     saved 4000 bars -> data\DASHUSDT_1h_4000.csv
+
+FRESH12v3 = ['SAND', 'MANA', 'ENJ', 'CHZ', 'AXS', 'SUSHI', 'SNX', 'COMP', 'LRC', 'ZIL', 'QTUM', 'DASH']

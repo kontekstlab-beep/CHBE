@@ -78,6 +78,9 @@ class Cfg:
     knife: bool = False                # запрет при ускоряющемся падении
     hours: Optional[set] = None        # разрешённые часы UTC (None = все)
     ladder_hours: bool = False         # True -> часовой фильтр действует и на лесенку
+    target_mult: Optional[float] = None  # выход лимитом на SMA*target_mult (вместо z>=exit_z)
+    trail_bars: int = 0                  # >0 -> после z>=exit_z тянуть до trail_bars баров,
+                                         # выход на первом баре с close <= prev close
     fee_model: str = "FUTURES"
     flat_fee: Optional[float] = None   # если задано — плоская комиссия за сторону
 
@@ -94,6 +97,10 @@ class Trade:
     net: float      # gross - fees
     mfe: float = 0.0   # макс. благоприятное отклонение за жизнь сделки (доли)
     mae: float = 0.0   # макс. неблагоприятное отклонение (доли, <= 0)
+    entry_z_val: float = 0.0   # z на баре триггера (для сайзинга от глубины)
+    entry_vol: float = 0.0     # относительная sigma48 (sd/mean) на триггере
+    entry_px: float = 0.0      # усреднённая цена входа
+    exit_px: float = 0.0       # цена выхода
 
 
 def hour_of(ts_ms: int) -> int:
@@ -169,6 +176,10 @@ def backtest_coin(d: dict, cfg: Cfg) -> List[Trade]:
     c, lo, hi, ts, o = d["c"], d["lo"], d["h"], d["ts"], d["o"]
     z = zseries(c, cfg.n)
     L = len(c)
+    sma_l = [None] * L
+    if cfg.target_mult is not None:
+        for j in range(cfg.n - 1, L):
+            sma_l[j] = sum(c[j - cfg.n + 1:j + 1]) / cfg.n
     trades: List[Trade] = []
     long = cfg.side == "long"
     i = cfg.n
@@ -221,6 +232,7 @@ def backtest_coin(d: dict, cfg: Cfg) -> List[Trade]:
         exit_px = None
         reason = None
         mfe = mae = 0.0
+        armed = None               # бар активации трейлинга (z >= exit_z)
         k = entry_bar + 1
         while k < L:
             zk = z[k]
@@ -260,11 +272,30 @@ def backtest_coin(d: dict, cfg: Cfg) -> List[Trade]:
                     partial_px = c[k]
                 if not long and cfg.exit_z < zk <= -cfg.partial_z:
                     partial_px = c[k]
-            exitc = (zk is not None and zk >= cfg.exit_z) if long \
-                else (zk is not None and zk <= cfg.exit_z)
-            if exitc:
-                exit_px, reason = c[k], "reversion"
-                break
+            # выход по возврату: цель SMA*k ИЛИ трейлинг после z>=exit_z ИЛИ z>=exit_z
+            if cfg.target_mult is not None:
+                sm = sma_l[k]
+                hit = (sm is not None and hi[k] >= sm * cfg.target_mult) if long \
+                    else (sm is not None and lo[k] <= sm * cfg.target_mult)
+                if hit:
+                    exit_px, reason = sm * cfg.target_mult, "reversion"
+                    break
+            elif cfg.trail_bars > 0:
+                hit = (zk is not None and zk >= cfg.exit_z) if long \
+                    else (zk is not None and zk <= cfg.exit_z)
+                if hit and armed is None:
+                    armed = k
+                if armed is not None:
+                    fade = c[k] <= c[k - 1] if long else c[k] >= c[k - 1]
+                    if fade or (k - armed) >= cfg.trail_bars:
+                        exit_px, reason = c[k], "reversion"
+                        break
+            else:
+                exitc = (zk is not None and zk >= cfg.exit_z) if long \
+                    else (zk is not None and zk <= cfg.exit_z)
+                if exitc:
+                    exit_px, reason = c[k], "reversion"
+                    break
             if (k - entry_bar) >= cfg.max_hold:
                 exit_px, reason = c[k], "time"
                 break
@@ -276,8 +307,13 @@ def backtest_coin(d: dict, cfg: Cfg) -> List[Trade]:
             pg = (partial_px / entry - 1) if long else (entry / partial_px - 1)
             gross = 0.5 * pg + 0.5 * gross
         fees = _fees(cfg, reason, partial_px is not None)
+        w0 = c[i - cfg.n + 1:i + 1]
+        m0 = sum(w0) / cfg.n
+        sd0 = pstdev(w0) or 1e-9
         trades.append(Trade(d["sym"], entry_bar, k, hour_of(ts[i]), reason,
-                            gross, fees, gross - fees, mfe, mae))
+                            gross, fees, gross - fees, mfe, mae,
+                            zi if zi is not None else 0.0, sd0 / m0,
+                            entry, exit_px))
         i = k + 1
     return trades
 

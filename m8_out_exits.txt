@@ -1,0 +1,17 @@
+=== M8-2. Exit hypotheses on C6 (EXPL18) ===
+E0 C6 reference        [FUTURES ] n= 940 win= 56.9% net=+0.467% pf= 1.85 med=+0.414% P&L=+21.94% MDD= 4.07% worst= -8.07%
+E0 C6 reference        [SPOT_BNB] n= 940 win= 55.2% net=+0.382% pf= 1.66 med=+0.330% P&L=+17.97% MDD= 4.63% worst= -8.15%
+E1a target SMA*0.97    [FUTURES ] n=1385 win= 31.3% net=-0.361% pf= 0.54 med=-0.349% P&L=-25.01% MDD=26.39% worst= -8.07%
+E1a target SMA*0.97    [SPOT_BNB] n=1385 win= 28.7% net=-0.467% pf= 0.45 med=-0.455% P&L=-32.36% MDD=33.63% worst= -8.15%
+E1b target SMA*1.00    [FUTURES ] n= 945 win= 57.9% net=+0.446% pf= 1.82 med=+0.404% P&L=+21.07% MDD= 4.31% worst= -8.07%
+E1b target SMA*1.00    [SPOT_BNB] n= 945 win= 56.2% net=+0.360% pf= 1.62 med=+0.320% P&L=+17.01% MDD= 4.82% worst= -8.15%
+E1c target SMA*1.03    [FUTURES ] n= 937 win= 56.2% net=+0.449% pf= 1.81 med=+0.405% P&L=+21.05% MDD= 4.88% worst= -8.07%
+E1c target SMA*1.03    [SPOT_BNB] n= 937 win= 54.5% net=+0.369% pf= 1.63 med=+0.324% P&L=+17.28% MDD= 5.42% worst= -8.15%
+E2  hold12             [FUTURES ] n= 812 win= 55.7% net=+0.320% pf= 1.43 med=+0.230% P&L=+12.99% MDD= 6.26% worst= -8.07%
+E2  hold12             [SPOT_BNB] n= 812 win= 54.3% net=+0.233% pf= 1.30 med=+0.146% P&L= +9.47% MDD= 6.52% worst= -8.15%
+E3  partial50@z>=-1    [FUTURES ] n= 940 win= 59.8% net=+0.475% pf= 1.91 med=+0.436% P&L=+22.30% MDD= 3.71% worst= -8.07%
+E3  partial50@z>=-1    [SPOT_BNB] n= 940 win= 57.4% net=+0.386% pf= 1.70 med=+0.348% P&L=+18.13% MDD= 4.17% worst= -8.15%
+E4a trail 1 bar        [FUTURES ] n= 940 win= 56.9% net=+0.454% pf= 1.83 med=+0.394% P&L=+21.34% MDD= 4.30% worst= -8.07%
+E4a trail 1 bar        [SPOT_BNB] n= 940 win= 55.2% net=+0.370% pf= 1.63 med=+0.311% P&L=+17.40% MDD= 4.86% worst= -8.15%
+E4b trail 2 bars       [FUTURES ] n= 940 win= 56.9% net=+0.438% pf= 1.80 med=+0.398% P&L=+20.59% MDD= 4.37% worst= -8.07%
+E4b trail 2 bars       [SPOT_BNB] n= 940 win= 55.2% net=+0.354% pf= 1.61 med=+0.315% P&L=+16.66% MDD= 4.92% worst= -8.15%

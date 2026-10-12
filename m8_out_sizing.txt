@@ -1,0 +1,18 @@
+
+=== M8-3. Sizing on C6 (EXPL18, SPOT_BNB) — n=940 ===
+S0 fixed 5%                        P&L= +17.97% MDD= 4.63% P&L/MDD= 3.88 taken=940/940
+S1 z-scaled 3%/7%                  P&L= +13.67% MDD= 3.60% P&L/MDD= 3.79 taken=940/940
+S2 vol-target (clip 2.5-10%)       P&L= +13.85% MDD= 4.32% P&L/MDD= 3.20 taken=940/940
+S3 max 3 concurrent                P&L=  +4.67% MDD= 1.58% P&L/MDD= 2.96 taken=317/940
+S3 max 5 concurrent                P&L=  +7.52% MDD= 2.40% P&L/MDD= 3.13 taken=473/940
+S3 max 10 concurrent               P&L= +14.15% MDD= 3.88% P&L/MDD= 3.64 taken=776/940
+S3 max inf concurrent              P&L= +17.97% MDD= 4.63% P&L/MDD= 3.88 taken=940/940
+
+=== M8-3. Sizing on C6 (EXPL18, FUTURES) — n=940 ===
+S0 fixed 5%                        P&L= +21.94% MDD= 4.07% P&L/MDD= 5.39 taken=940/940
+S1 z-scaled 3%/7%                  P&L= +16.47% MDD= 3.26% P&L/MDD= 5.05 taken=940/940
+S2 vol-target (clip 2.5-10%)       P&L= +18.32% MDD= 3.79% P&L/MDD= 4.83 taken=940/940
+S3 max 3 concurrent                P&L=  +6.01% MDD= 1.53% P&L/MDD= 3.93 taken=317/940
+S3 max 5 concurrent                P&L=  +9.52% MDD= 2.26% P&L/MDD= 4.21 taken=473/940
+S3 max 10 concurrent               P&L= +17.43% MDD= 3.63% P&L/MDD= 4.80 taken=776/940
+S3 max inf concurrent              P&L= +21.94% MDD= 4.07% P&L/MDD= 5.39 taken=940/940
