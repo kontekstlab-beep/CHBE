@@ -27,9 +27,20 @@ class PaperConfig:
     # --- исполнение ---
     timeframe: str = "1h"
     # корзина (широкая диверсификация; можно менять)
+    # BTC обязан быть ПЕРВЫМ — его closes читает BTC-фильтр входа (C6).
+    # Первые 10 — исходная корзина M4; остальные 21 — монеты, на которых C6
+    # валидирован наборами FRESH12/FRESH12v2 (M6/M7) и которые доступны на
+    # спот-testnet (TON, KAS, MKR на нём отсутствуют). Сайзинг 5% оставлен —
+    # при полном проливе капитал ограничивает число одновременных позиций
+    # физически (недостающие ордера отклоняются, движок это переживает).
     symbols: List[str] = field(default_factory=lambda: [
         "BTC/USDT", "ETH/USDT", "SOL/USDT", "LINK/USDT", "AVAX/USDT",
         "DOT/USDT", "ADA/USDT", "ARB/USDT", "OP/USDT", "APT/USDT",
+        "HBAR/USDT", "XLM/USDT", "ALGO/USDT", "ICP/USDT", "ETC/USDT",
+        "FET/USDT", "RENDER/USDT", "TIA/USDT", "SEI/USDT", "ONDO/USDT",
+        "IMX/USDT", "WIF/USDT", "JUP/USDT", "PYTH/USDT", "JTO/USDT",
+        "WLD/USDT", "STX/USDT", "LDO/USDT", "ETHFI/USDT", "ENA/USDT",
+        "AUCTION/USDT",
     ])
     start_equity: float = 1000.0
     # комиссии для dry-run учёта (Binance futures VIP0)
