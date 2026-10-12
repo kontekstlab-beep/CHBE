@@ -1,0 +1,11 @@
+=== M9-2. Multi-TF arms (EXPL18, signal 1h C6, refinement 15m) ===
+A0 close (baseline=C6)     [FUTURES ] sig= 943 fill=  99% n= 936 win= 56.7% net= +0.466% pf= 1.85 med=+0.404% P&L=+21.80% MDD= 4.07%
+A1 limit -0.3%, TTL 4x15m  [FUTURES ] sig=1126 fill=  66% n= 744 win= 57.9% net= +0.473% pf= 1.85 med=+0.398% P&L=+17.58% MDD= 5.09%
+A2 limit -0.6%, TTL 4x15m  [FUTURES ] sig=1528 fill=  37% n= 567 win= 60.3% net= +0.588% pf= 2.08 med=+0.532% P&L=+16.67% MDD= 3.76%
+B A0 + stop on 15m lows    [FUTURES ] sig= 943 fill=  99% n= 936 win= 56.7% net= +0.466% pf= 1.85 med=+0.404% P&L=+21.80% MDD= 4.07%
+C wait green 15m bar       [FUTURES ] sig= 987 fill=  94% n= 932 win= 57.0% net= +0.323% pf= 1.60 med=+0.329% P&L=+15.07% MDD= 4.49%
+A0 close (baseline=C6)     [SPOT_BNB] sig= 943 fill=  99% n= 936 win= 55.1% net= +0.381% pf= 1.65 med=+0.321% P&L=+17.85% MDD= 4.63%
+A1 limit -0.3%, TTL 4x15m  [SPOT_BNB] sig=1126 fill=  66% n= 744 win= 56.0% net= +0.389% pf= 1.66 med=+0.314% P&L=+14.48% MDD= 5.56%
+A2 limit -0.6%, TTL 4x15m  [SPOT_BNB] sig=1528 fill=  37% n= 567 win= 58.4% net= +0.506% pf= 1.88 med=+0.450% P&L=+14.33% MDD= 4.15%
+B A0 + stop on 15m lows    [SPOT_BNB] sig= 943 fill=  99% n= 936 win= 55.1% net= +0.381% pf= 1.65 med=+0.321% P&L=+17.85% MDD= 4.63%
+C wait green 15m bar       [SPOT_BNB] sig= 987 fill=  94% n= 932 win= 54.3% net= +0.239% pf= 1.42 med=+0.244% P&L=+11.14% MDD= 5.05%
