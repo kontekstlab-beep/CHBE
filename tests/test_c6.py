@@ -228,6 +228,10 @@ class StubBroker(DryRunBroker):
     def held_qty(self, symbol):
         return self._held
 
+    def fetch_order_info(self, order_id, symbol):
+        # ордер, пропавший с биржи без следа, считаем отменённым
+        return dict(status="canceled", side="buy", price=0.0, qty=0.0)
+
 
 def test_reconcile_drops_ghost_ladder():
     eng = _engine_no_filter()

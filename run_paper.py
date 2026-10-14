@@ -135,6 +135,13 @@ def run_live(cfg: PaperConfig, testnet: bool, spot: bool = False):
             logging.info("баланс testnet: %.2f USDT", eng.equity)
         except Exception as e:
             logging.warning("не удалось получить баланс testnet: %s", e)
+        # книга ордеров брокера живёт в памяти процесса: после рестарта sync()
+        # не опрашивает ордера из стейта -> филлы за простой теряются (bug M10).
+        # Восстанавливаем её ДО reconcile, который добивает остаток через fetch_order.
+        restored = eng.tracked_orders()
+        if restored:
+            broker.restore_open(restored)
+            logging.info("книга ордеров восстановлена из стейта: %d", len(restored))
         # сверка стейта с биржей при старте (рестарт/даунтайм/сброс testnet)
         reconcile(eng, broker)
     last_ts = {s: (eng.states[s].__dict__.get("_last_ts") if s in eng.states else 0) for s in cfg.symbols}

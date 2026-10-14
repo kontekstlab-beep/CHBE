@@ -65,6 +65,15 @@ class DryRunBroker:
     def held_qty(self, symbol):
         return None
 
+    def restore_open(self, orders) -> None:
+        """No-op: sync DryRun считает филлы по свече, книга не нужна."""
+
+    def forget(self, order_id) -> None:
+        self._orders.pop(order_id, None)
+
+    def fetch_order_info(self, order_id, symbol):
+        return None     # «неизвестно» -> reconcile не трогает стейт
+
 
 class _CcxtTestnetBroker:
     """Общие механики работы с testnet-биржей через ccxt (фьючерсы и спот).
@@ -196,6 +205,32 @@ class _CcxtTestnetBroker:
             elif status in ("canceled", "rejected", "expired"):
                 self._open.pop(oid, None)
         return fills
+
+    def restore_open(self, orders) -> None:
+        """Восстановить книгу открытых ордеров после рестарта процесса.
+
+        self._open живёт только в памяти процесса; без этого sync() не опрашивает
+        ордера, созданные до рестарта, и их филлы за время простоя теряются.
+        orders: iterable of (oid, symbol, side).
+        """
+        for oid, symbol, side in orders:
+            self._open[oid] = dict(symbol=symbol, side=side)
+
+    def forget(self, order_id) -> None:
+        """Убрать ордер из книги опроса (уже обработан вне sync, напр. reconcile)."""
+        self._open.pop(order_id, None)
+
+    def fetch_order_info(self, order_id, symbol):
+        """Статус ордера для reconcile: dict(status, side, price, qty).
+        None = НЕИЗВЕСТНО (ошибка запроса) — reconcile не должен трогать стейт."""
+        try:
+            o = self.ex.fetch_order(order_id, symbol)
+        except Exception as e:
+            self._log.debug("fetch_order %s: %s", order_id, e)
+            return None
+        return dict(status=o.get("status"), side=o.get("side"),
+                    price=o.get("average") or o.get("price"),
+                    qty=float(o.get("filled") or 0.0))
 
     def equity(self) -> float:
         bal = self.ex.fetch_balance()

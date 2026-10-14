@@ -40,6 +40,12 @@ class FakeSpotExchange:
             raise RuntimeError("network down")
         return [o for o in self.open_orders if o["symbol"] == symbol]
 
+    def fetch_order(self, oid, symbol):
+        if self.fail_orders:
+            raise RuntimeError("network down")
+        # ордер, пропавший с биржи без следа, считаем отменённым (сброс testnet)
+        return dict(id=oid, status="canceled", side="buy", price=100.0, filled=0.0)
+
     def fetch_balance(self):
         if self.fail_balance:
             raise RuntimeError("network down")
