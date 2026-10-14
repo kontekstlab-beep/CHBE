@@ -213,6 +213,19 @@ class PaperEngine:
         log.info("%s ЗАКРЫТА @%.6f [%s] pnl=%.4f equity=%.2f",
                  symbol, exit_px, reason, pnl, self.equity)
 
+    def tracked_orders(self) -> List[tuple]:
+        """(oid, symbol, side) всех ордеров, которые знает стейт.
+        Для broker.restore_open() при рестарте: иначе sync() их не опрашивает."""
+        out = []
+        for sym, st in self.states.items():
+            if st.pending is not None:
+                out.append((st.pending.oid, sym, "buy"))
+            if st.pending_ladder is not None:
+                out.append((st.pending_ladder.oid, sym, "buy"))
+            if st.position is not None and st.position.sell_oid is not None:
+                out.append((st.position.sell_oid, sym, "sell"))
+        return out
+
     # --- отчётность ---
     def summary(self) -> dict:
         n = len(self.trades)
@@ -228,31 +241,63 @@ def reconcile(eng: PaperEngine, broker, log=None) -> None:
 
     None от брокера («неизвестно», ошибка запроса) -> стейт НЕ трогаем. Иначе:
     - pending-лимитка (вход или лесенка), которой нет среди открытых на бирже,
-      -> снимается со стейта;
-    - лимит-продажа позиции, которой нет на бирже, -> забывается (перевыставится
+      -> сначала fetch_order: closed+filled значит ордер ИСПОЛНИЛСЯ за простой
+      (не призрак!) -> филл прогоняется через штатный _on_fill (позиция откроется
+      / лесенка усреднится / выход журналируется); canceled/expired/rejected ->
+      снимается со стейта; ошибка запроса -> не трогаем;
+    - лимит-продажа позиции, которой нет на бирже, -> тот же fetch_order:
+      исполнена -> закрытие позиции штатно; иначе забывается (перевыставится
       движком при следующей смене цели);
     - позиция, по которой на бирже нет base-актива (held < 10% от qty), ->
       снимается БЕЗ сделки (reconcile-drop): продавать нечего, сделка не журналируется.
+
+    Идемпотентность: обработанный филл обнуляет pending/pending_ladder (или
+    position), повторная обработка того же order_id ни к чему не приведёт;
+    ордер дополнительно убирается из книги опроса брокера (broker.forget).
     """
     log = log or logging.getLogger("paper")
+
+    def resolve_missing(sym, st, oid, kind):
+        """Ордер есть в стейте, но нет среди открытых на бирже. True = обработан."""
+        info = broker.fetch_order_info(oid, sym)
+        if info is None:
+            return False                       # неизвестно -> не трогаем
+        if info["status"] == "closed" and info["qty"] > 0:
+            log.warning("%s reconcile: %s %s ИСПОЛНЕН @%s qty=%s за простой -> "
+                        "прогоняем филл через движок", sym, kind, oid,
+                        info["price"], info["qty"])
+            eng._on_fill(sym, st, dict(order_id=oid, side=info["side"],
+                                       price=info["price"], qty=info["qty"],
+                                       maker=True))
+            broker.forget(oid)
+            return True
+        log.warning("%s reconcile: %s %s отсутствует на бирже (status=%s) -> "
+                    "снят со стейта", sym, kind, oid, info["status"])
+        broker.forget(oid)
+        return True
+
     for sym, st in eng.states.items():
         if st.pending is not None or st.pending_ladder is not None \
                 or (st.position is not None and st.position.sell_oid is not None):
             oids = broker.open_order_ids_on_exchange(sym)
             if oids is not None:
+                # вход сначала, лесенка после (усреднению нужна позиция)
                 if st.pending is not None and str(st.pending.oid) not in oids:
-                    log.warning("%s reconcile: лимитка %s отсутствует на бирже -> снята со стейта",
-                                sym, st.pending.oid)
-                    st.pending = None
+                    if resolve_missing(sym, st, st.pending.oid, "лимитка"):
+                        if st.pending is not None:   # не филл (иначе _on_fill обнулил)
+                            st.pending = None
                 if st.pending_ladder is not None and str(st.pending_ladder.oid) not in oids:
-                    log.warning("%s reconcile: лесенка %s отсутствует на бирже -> снята со стейта",
-                                sym, st.pending_ladder.oid)
-                    st.pending_ladder = None
-                if st.position is not None and st.position.sell_oid is not None \
-                        and str(st.position.sell_oid) not in oids:
-                    log.warning("%s reconcile: лимит-продажа %s отсутствует на бирже -> "
-                                "забыта (перевыставится при смене цели)", sym, st.position.sell_oid)
-                    st.position.sell_oid = None
+                    if resolve_missing(sym, st, st.pending_ladder.oid, "лесенка"):
+                        if st.pending_ladder is not None:
+                            st.pending_ladder = None
+                # снапшот oids мог устареть (филл выше только что выставил новый
+                # sell на бирже) -> для лимит-продажи берём СВЕЖИЙ снапшот
+                if st.position is not None and st.position.sell_oid is not None:
+                    oids2 = broker.open_order_ids_on_exchange(sym)
+                    if oids2 is not None and str(st.position.sell_oid) not in oids2:
+                        if resolve_missing(sym, st, st.position.sell_oid, "лимит-продажа"):
+                            if st.position is not None:   # не филл-выход
+                                st.position.sell_oid = None
         if st.position is not None:
             held = broker.held_qty(sym)
             if held is not None and held < 0.1 * st.position.qty:
