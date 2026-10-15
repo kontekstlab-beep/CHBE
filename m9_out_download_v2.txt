@@ -1,0 +1,12 @@
+WIF      15m saved 16000 bars
+JUP      15m saved 16000 bars
+PYTH     15m saved 16000 bars
+JTO      15m saved 16000 bars
+WLD      15m saved 16000 bars
+STX      15m saved 16000 bars
+KAS      15m saved 16000 bars
+LDO      15m saved 16000 bars
+MKR      15m saved 16000 bars
+ETHFI    15m saved 16000 bars
+ENA      15m saved 16000 bars
+AUCTION  15m saved 16000 bars

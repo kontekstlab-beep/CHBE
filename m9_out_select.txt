@@ -1,0 +1,8 @@
+=== M9-3a. 15m candidate sanity on FRESH12v2 (informational) ===
+C6@1h            [SPOT_BNB] n= 482 win= 57.5% net=+0.533% med=+0.581% P&L=+12.85% MDD= 2.40%
+CAND@15m         [SPOT_BNB] n= 355 win= 56.3% net=+0.397% med=+0.413% P&L= +7.04% MDD= 2.61%
+C6@1h            [FUTURES ] n= 482 win= 59.1% net=+0.618% med=+0.665% P&L=+14.89% MDD= 2.15%
+CAND@15m         [FUTURES ] n= 355 win= 58.0% net=+0.480% med=+0.494% P&L= +8.53% MDD= 2.43%
+
+paired across 11 coins (SPOT_BNB): CAND-C6@1h = -0.185 pp/trade, t=-1.31
+(informational only; FRESH12v3 spending decision follows)
