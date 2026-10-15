@@ -1,0 +1,2 @@
+=== M10-B. Breakdown short: close<min(low,48), exit max(high,12) / 24h ===
+ch48/ex12/stop+6%                  n= 752 win= 40.6% net= -0.378% pf= 0.74 med=-0.246% worst= -5.76% P&L=-14.22% MDD=22.53%

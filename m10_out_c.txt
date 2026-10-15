@@ -1,0 +1,5 @@
+=== M10-C. z48>+1.5 + two red bars -> short; exit z<=0 / time / stop+8% ===
+z>+1.5 hold8                       n= 562 win= 48.0% net= -0.360% pf= 0.69 med=-0.283% worst= -7.51% P&L=-10.11% MDD=11.80%
+z>+1.5 hold24                      n= 503 win= 53.1% net= -0.507% pf= 0.72 med=-0.445% worst= -7.51% P&L=-12.74% MDD=18.12%
+z>+2.0 hold8                       n= 179 win= 48.0% net= -0.261% pf= 0.78 med=-0.206% worst= -7.51% P&L= -2.34% MDD= 4.94%
+z>+2.0 hold24                      n= 175 win= 50.3% net= -0.119% pf= 0.93 med=-0.311% worst= -7.51% P&L= -1.04% MDD= 6.81%

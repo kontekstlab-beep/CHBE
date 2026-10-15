@@ -1,0 +1,4 @@
+=== M10-A. Trend short: close<SMA96 & ret24<-X%, exit SMA24 / 24h / stop+8% ===
+X=4% stop+8%                       n= 763 win= 33.9% net= -0.265% pf= 0.80 med=-0.068% worst= -7.51% P&L=-10.10% MDD=22.53%
+X=6% stop+8%                       n= 360 win= 32.8% net= -0.546% pf= 0.67 med=-0.518% worst= -7.51% P&L= -9.83% MDD=14.99%
+X=8% stop+8%                       n= 168 win= 38.1% net= -0.605% pf= 0.69 med=-0.145% worst= -7.51% P&L= -5.08% MDD= 8.01%
