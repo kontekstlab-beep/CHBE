@@ -1,0 +1,139 @@
+parsed trades (wave 12-13 Oct): 36 (MAIN=11, B2=25)
+
+=== TRADE TABLE ===
+bot  sym                entry_bar      entry          exit_bar       exit    reason      pnl     pct
+MAIN ADA/USDT   10-12 18:00     0.2426 10-13 03:00     0.2270      time   -32.84  -6.43%
+MAIN OP/USDT    10-12 18:00     0.1352 10-13 03:00     0.1269      time   -31.37  -6.14%
+MAIN HBAR/USDT  10-12 18:00     0.0904 10-13 03:00     0.0852      time   -29.52  -5.77%
+MAIN IMX/USDT   10-12 18:00     0.1821 10-13 03:00     0.1711      time   -30.86  -6.04%
+MAIN JTO/USDT   10-12 18:00     0.5335 10-13 03:00     0.4963      stop   -35.54  -6.96%
+MAIN WLD/USDT   10-12 18:00     0.5251 10-13 03:00     0.4801      stop   -43.65  -8.57%
+B2   SEI/USDT   10-12 18:00     0.0665 10-13 03:00     0.0608      stop   -30.63  -8.59%
+B2   WIF/USDT   10-12 18:00     0.2132 10-13 03:00     0.1977      stop   -25.96  -7.27%
+B2   WLD/USDT   10-12 18:00     0.5251 10-13 03:00     0.4819      stop   -29.35  -8.23%
+B2   LDO/USDT   10-12 18:00     0.4208 10-13 03:00     0.3884      stop   -27.48  -7.70%
+B2   ADA/USDT   10-12 18:00     0.2420 10-13 05:00     0.2354      time   -10.54  -2.73%
+B2   OP/USDT    10-12 18:00     0.1352 10-13 05:00     0.1324      time    -7.57  -2.07%
+B2   HBAR/USDT  10-12 18:00     0.0902 10-13 05:00     0.0874      time   -12.07  -3.14%
+B2   JUP/USDT   10-12 18:00     0.3441 10-13 05:00     0.3333      time   -11.35  -3.14%
+B2   AUCTION/USDT 10-12 18:00     3.6350 10-13 05:00     3.5730      time    -6.28  -1.71%
+MAIN DOT/USDT   10-12 20:00     1.2180 10-13 03:00     1.1280      stop   -37.69  -7.39%
+MAIN SEI/USDT   10-12 20:00     0.0658 10-13 03:00     0.0608      stop   -38.98  -7.65%
+MAIN SOL/USDT   10-12 20:00   107.8500 10-13 06:00   107.4300      time    -2.32  -0.39%
+MAIN ETC/USDT   10-12 21:00     8.2300 10-13 06:00     8.1700      time    -4.04  -0.73%
+B2   BTC/USDT   10-12 22:00 82448.0000 10-13 06:00 83254.6600 reversion     0.21  +0.98%
+B2   ARB/USDT   10-12 22:00     0.1860 10-13 07:00     0.1871      time     0.12  +0.59%
+B2   ETC/USDT   10-12 22:00     8.1137 10-13 07:00     8.2300      time     0.62  +1.43%
+B2   IMX/USDT   10-12 22:00     0.1801 10-13 07:00     0.1787      time    -0.19  -0.78%
+B2   TIA/USDT   10-12 23:00     0.5500 10-13 03:00     0.5113      stop    -1.62  -7.04%
+B2   SOL/USDT   10-13 02:00   106.4799 10-13 10:00   108.6200      time     0.88  +2.01%
+B2   APT/USDT   10-13 02:00     0.8160 10-13 10:00     0.8500      time     0.93  +4.17%
+B2   FET/USDT   10-13 02:00     0.2185 10-13 10:00     0.2186      time    -0.01  +0.05%
+B2   JTO/USDT   10-13 02:00     0.5166 10-13 10:00     0.5406      time     1.04  +4.65%
+B2   ENA/USDT   10-13 02:00     0.2108 10-13 10:00     0.2166      time     0.61  +2.75%
+B2   ETH/USDT   10-13 03:00  2490.6900 10-13 07:00  2522.3600 reversion     0.28  +1.27%
+B2   LINK/USDT  10-13 03:00    12.6250 10-13 08:00    13.1190 reversion     0.88  +3.91%
+B2   AVAX/USDT  10-13 03:00    10.1460 10-13 11:00    10.3820      time     0.51  +2.33%
+B2   DOT/USDT   10-13 03:00     1.1690 10-13 11:00     1.1880      time     0.35  +1.63%
+B2   XLM/USDT   10-13 03:00     0.1905 10-13 11:00     0.1933      time     0.32  +1.47%
+B2   ONDO/USDT  10-13 03:00     0.4696 10-13 11:00     0.3360      time    -6.49 -28.45%
+MAIN DOT/USDT   10-13 05:00     1.1450                --         --      OPEN       --      --
+
+=== A. STOP-OUTS: price after exit (window available: bars after exit) ===
+MAIN JTO/USDT   stop @0.4963 entry=0.5335 | next 6h: max_high=0.5458 min_low=0.5241 | back above entry: True
+MAIN WLD/USDT   stop @0.4801 entry=0.5251 | next 6h: max_high=0.5246 min_low=0.5112 | back above entry: False
+B2   SEI/USDT   stop @0.0608 entry=0.0665 | next 6h: max_high=0.0649 min_low=0.0633 | back above entry: False
+B2   WIF/USDT   stop @0.1977 entry=0.2132 | next 6h: max_high=0.2120 min_low=0.2066 | back above entry: False
+B2   WLD/USDT   stop @0.4819 entry=0.5251 | next 6h: max_high=0.5246 min_low=0.5112 | back above entry: False
+B2   LDO/USDT   stop @0.3884 entry=0.4208 | next 6h: max_high=0.4248 min_low=0.4125 | back above entry: True
+MAIN DOT/USDT   stop @1.1280 entry=1.2180 | next 6h: max_high=1.2196 min_low=1.1744 | back above entry: True
+MAIN SEI/USDT   stop @0.0608 entry=0.0658 | next 6h: max_high=0.0649 min_low=0.0633 | back above entry: False
+B2   TIA/USDT   stop @0.5113 entry=0.5500 | next 6h: max_high=0.6322 min_low=0.5934 | back above entry: True
+
+=== B. RED TIME-STOPS: price after exit (available window only) ===
+MAIN ADA/USDT   exit @0.2270 (-6.43%) | next 6h: max_high +5.90% last_close +3.70% (vs entry: max -0.91%)
+MAIN OP/USDT    exit @0.1269 (-6.14%) | next 6h: max_high +10.69% last_close +8.59% (vs entry: max +3.90%)
+MAIN HBAR/USDT  exit @0.0852 (-5.77%) | next 6h: max_high +4.19% last_close +2.11% (vs entry: max -1.82%)
+MAIN IMX/USDT   exit @0.1711 (-6.04%) | next 6h: max_high +5.84% last_close +3.74% (vs entry: max -0.55%)
+B2   ADA/USDT   exit @0.2354 (-2.73%) | next 4h: max_high +2.12% last_close +0.00% (vs entry: max -0.66%)
+B2   OP/USDT    exit @0.1324 (-2.07%) | next 4h: max_high +6.10% last_close +4.08% (vs entry: max +3.90%)
+B2   HBAR/USDT  exit @0.0874 (-3.14%) | next 4h: max_high +1.60% last_close -0.42% (vs entry: max -1.58%)
+B2   JUP/USDT   exit @0.3333 (-3.14%) | next 4h: max_high +1.83% last_close -1.05% (vs entry: max -1.37%)
+B2   AUCTION/USDT exit @3.5730 (-1.71%) | next 4h: max_high +2.13% last_close +0.42% (vs entry: max +0.39%)
+MAIN SOL/USDT   exit @107.4300 (-0.39%) | next 3h: max_high +1.47% last_close -0.25% (vs entry: max +1.08%)
+MAIN ETC/USDT   exit @8.1700 (-0.73%) | next 3h: max_high +1.13% last_close -0.42% (vs entry: max +0.39%)
+B2   IMX/USDT   exit @0.1787 (-0.78%) | next 2h: max_high +0.90% last_close -0.67% (vs entry: max +0.11%)
+
+=== C. ENTRY QUALITY: MAE, deeper-limit hypotheticals, close vs next open ===
+MAIN ADA/USDT   MAE= -7.71% nextOpen_vs_fill=-0.16% | -0.5%: FILL pnl -5.96% vs -6.43% | -1.0%: NO FILL
+MAIN OP/USDT    MAE= -7.02% nextOpen_vs_fill=-0.86% | -0.5%: FILL pnl -5.67% vs -6.14% | -1.0%: FILL pnl -5.19% vs -6.14%
+MAIN HBAR/USDT  MAE= -7.00% nextOpen_vs_fill=-1.57% | -0.5%: FILL pnl -5.30% vs -5.77% | -1.0%: FILL pnl -4.82% vs -5.77%
+MAIN IMX/USDT   MAE= -7.41% nextOpen_vs_fill=-2.03% | -0.5%: FILL pnl -5.57% vs -6.04% | -1.0%: FILL pnl -5.09% vs -6.04%
+MAIN JTO/USDT   MAE= -8.30% nextOpen_vs_fill=-3.07% | -0.5%: FILL pnl -6.50% vs -6.96% | -1.0%: FILL pnl -6.02% vs -6.96%
+MAIN WLD/USDT   MAE=-10.02% nextOpen_vs_fill=-0.69% | -0.5%: FILL pnl -8.11% vs -8.57% | -1.0%: FILL pnl -7.65% vs -8.57%
+B2   SEI/USDT   MAE= -9.46% nextOpen_vs_fill=-0.77% | -0.5%: FILL pnl -8.13% vs -8.59% | -1.0%: FILL pnl -7.67% vs -8.59%
+B2   WIF/USDT   MAE= -8.68% nextOpen_vs_fill=-1.74% | -0.5%: FILL pnl -6.80% vs -7.27% | -1.0%: FILL pnl -6.33% vs -7.27%
+B2   WLD/USDT   MAE=-10.02% nextOpen_vs_fill=-0.69% | -0.5%: FILL pnl -7.77% vs -8.23% | -1.0%: FILL pnl -7.30% vs -8.23%
+B2   LDO/USDT   MAE= -8.53% nextOpen_vs_fill=-1.02% | -0.5%: FILL pnl -7.24% vs -7.70% | -1.0%: FILL pnl -6.77% vs -7.70%
+B2   ADA/USDT   MAE= -7.48% nextOpen_vs_fill=+0.08% | -0.5%: FILL pnl -2.24% vs -2.73% | -1.0%: NO FILL
+B2   OP/USDT    MAE= -7.02% nextOpen_vs_fill=-0.86% | -0.5%: FILL pnl -1.58% vs -2.07% | -1.0%: FILL pnl -1.08% vs -2.07%
+B2   HBAR/USDT  MAE= -6.77% nextOpen_vs_fill=-1.33% | -0.5%: FILL pnl -2.65% vs -3.14% | -1.0%: FILL pnl -2.16% vs -3.14%
+B2   JUP/USDT   MAE= -7.15% nextOpen_vs_fill=-2.44% | -0.5%: FILL pnl -2.65% vs -3.14% | -1.0%: FILL pnl -2.16% vs -3.14%
+B2   AUCTION/USDT MAE= -5.47% nextOpen_vs_fill=-0.66% | -0.5%: FILL pnl -1.21% vs -1.71% | -1.0%: FILL pnl -0.71% vs -1.71%
+MAIN DOT/USDT   MAE= -8.49% nextOpen_vs_fill=-0.21% | -0.5%: FILL pnl -6.92% vs -7.39% | -1.0%: FILL pnl -6.45% vs -7.39%
+MAIN SEI/USDT   MAE= -8.53% nextOpen_vs_fill=+0.41% | -0.5%: FILL pnl -7.18% vs -7.65% | -1.0%: FILL pnl -6.71% vs -7.65%
+MAIN SOL/USDT   MAE= -5.83% nextOpen_vs_fill=+0.38% | -0.5%: FILL pnl +0.11% vs -0.39% | -1.0%: FILL pnl +0.62% vs -0.39%
+MAIN ETC/USDT   MAE= -5.99% nextOpen_vs_fill=+0.39% | -0.5%: FILL pnl -0.23% vs -0.73% | -1.0%: FILL pnl +0.27% vs -0.73%
+B2   BTC/USDT   MAE= -1.77% nextOpen_vs_fill=+0.12% | -0.5%: FILL pnl +1.49% vs +0.98% | -1.0%: FILL pnl +2.00% vs +0.98%
+B2   ARB/USDT   MAE= -6.42% nextOpen_vs_fill=-1.28% | -0.5%: FILL pnl +1.10% vs +0.59% | -1.0%: FILL pnl +1.61% vs +0.59%
+B2   ETC/USDT   MAE= -4.64% nextOpen_vs_fill=+0.53% | -0.5%: FILL pnl +1.94% vs +1.43% | -1.0%: FILL pnl +2.46% vs +1.43%
+B2   IMX/USDT   MAE= -6.39% nextOpen_vs_fill=-1.39% | -0.5%: FILL pnl -0.28% vs -0.78% | -1.0%: FILL pnl +0.22% vs -0.78%
+B2   TIA/USDT   MAE= -8.35% nextOpen_vs_fill=-2.31% | -0.5%: FILL pnl -6.57% vs -7.04% | -1.0%: FILL pnl -6.10% vs -7.04%
+B2   ETH/USDT   MAE= -0.20% nextOpen_vs_fill=-0.03% | -0.5%: NO FILL | -1.0%: NO FILL
+B2   LINK/USDT  MAE= +1.24% nextOpen_vs_fill=+1.47% | -0.5%: NO FILL | -1.0%: NO FILL
+
+=== D. B2 (z<-1.5) vs MAIN (z<-2) on overlapping symbols ===
+ADA/USDT   MAIN in@0.2426 out -6.43% (time) | B2 in@0.2420 out -2.73% (time)
+DOT/USDT   MAIN in@1.1450 out OPEN | B2 in@1.1690 out +1.63% (time)
+ETC/USDT   MAIN in@8.2300 out -0.73% (time) | B2 in@8.1137 out +1.43% (time)
+HBAR/USDT  MAIN in@0.0904 out -5.77% (time) | B2 in@0.0902 out -3.14% (time)
+IMX/USDT   MAIN in@0.1821 out -6.04% (time) | B2 in@0.1801 out -0.78% (time)
+JTO/USDT   MAIN in@0.5335 out -6.96% (stop) | B2 in@0.5166 out +4.65% (time)
+OP/USDT    MAIN in@0.1352 out -6.14% (time) | B2 in@0.1352 out -2.07% (time)
+SEI/USDT   MAIN in@0.0658 out -7.65% (stop) | B2 in@0.0665 out -8.59% (stop)
+SOL/USDT   MAIN in@107.8500 out -0.39% (time) | B2 in@106.4799 out +2.01% (time)
+WLD/USDT   MAIN in@0.5251 out -8.57% (stop) | B2 in@0.5251 out -8.23% (stop)
+
+=== E. LADDER: did z reach -3 during the position? hypothetical 2nd leg ===
+MAIN ADA/USDT   z<-3 at bar 5 of life, ladder @0.2328 FILL: pnl -6.43% -> -4.50%
+MAIN OP/USDT    z<-3 at bar 6 of life, ladder @0.1270 FILL: pnl -6.14% -> -3.22%
+MAIN HBAR/USDT  z<-3 at bar 6 of life, ladder @0.0851 FILL: pnl -5.77% -> -2.89%
+MAIN WLD/USDT   z<-3 at bar 6 of life, ladder @0.4803 FILL: pnl -8.57% -> -4.50%
+B2   SEI/USDT   z<-3 at bar 6 of life, ladder @0.0608 FILL: pnl -8.59% -> -4.50%
+B2   WIF/USDT   z<-3 at bar 6 of life, ladder @0.1971 FILL: pnl -7.27% -> -3.63%
+B2   WLD/USDT   z<-3 at bar 6 of life, ladder @0.4803 FILL: pnl -8.23% -> -4.14%
+B2   LDO/USDT   z<-3 at bar 6 of life, ladder @0.3872 FILL: pnl -7.70% -> -3.86%
+B2   ADA/USDT   z<-3 at bar 5 of life, ladder @0.2328 FILL: pnl -2.73% -> -0.84%
+B2   OP/USDT    z<-3 at bar 6 of life, ladder @0.1270 FILL: pnl -2.07% -> +0.98%
+B2   HBAR/USDT  z<-3 at bar 6 of life, ladder @0.0851 FILL: pnl -3.14% -> -0.29%
+B2   AUCTION/USDT z<-3 at bar 6 of life, ladder @3.4670 FILL: pnl -1.71% -> +0.62%
+MAIN DOT/USDT   z<-3 at bar 3 of life, ladder @1.1692 FILL: pnl -7.39% -> -5.50%
+MAIN SEI/USDT   z<-3 at bar 4 of life, ladder @0.0608 FILL: pnl -7.65% -> -3.98%
+MAIN SOL/USDT   z<-3 at bar 4 of life, ladder @102.9500 FILL: pnl -0.39% -> +1.93%
+MAIN ETC/USDT   z<-3 at bar 2 of life, ladder @7.9970 FILL: pnl -0.73% -> +0.70%
+B2   BTC/USDT   z<-3 at bar 2 of life, ladder @81394.4000 FILL: pnl +0.98% -> +1.63%
+B2   ARB/USDT   z<-3 at bar 2 of life, ladder @0.1764 FILL: pnl +0.59% -> +3.25%
+B2   ETC/USDT   z<-3 at bar 1 of life, ladder @7.9970 FILL: pnl +1.43% -> +2.17%
+
+=== F. BTC GATE (z48 of BTC) at each MAIN signal bar ===
+MAIN ADA/USDT   sig 1791824400000 BTC z48 = -1.82 (gate needs < -1)
+MAIN OP/USDT    sig 1791824400000 BTC z48 = -1.82 (gate needs < -1)
+MAIN HBAR/USDT  sig 1791824400000 BTC z48 = -1.82 (gate needs < -1)
+MAIN IMX/USDT   sig 1791824400000 BTC z48 = -1.82 (gate needs < -1)
+MAIN JTO/USDT   sig 1791824400000 BTC z48 = -1.82 (gate needs < -1)
+MAIN WLD/USDT   sig 1791824400000 BTC z48 = -1.82 (gate needs < -1)
+MAIN DOT/USDT   sig 1791831600000 BTC z48 = -0.92 (gate needs < -1)
+MAIN SEI/USDT   sig 1791831600000 BTC z48 = -0.92 (gate needs < -1)
+MAIN SOL/USDT   sig 1791831600000 BTC z48 = -0.92 (gate needs < -1)
+MAIN ETC/USDT   sig 1791831600000 BTC z48 = -0.92 (gate needs < -1)
+MAIN DOT/USDT   sig 1791864000000 BTC z48 = 0.4 (gate needs < -1)
