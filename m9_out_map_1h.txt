@@ -1,0 +1,40 @@
+
+=== TF 1h [SPOT_BNB] (window/z/hold -> net%/trade, n, med, MDD) ===
+n=  24 z=-2.0 h=   4 | trades=1360 win= 52.7% net= +0.135% pf= 1.25 med=+0.109% P&L= +9.18% MDD= 6.63%
+n=  24 z=-2.0 h=   8 | trades=1187 win= 55.7% net= +0.245% pf= 1.37 med=+0.195% P&L=+14.55% MDD= 8.21%
+n=  24 z=-2.0 h=  16 | trades=1086 win= 59.9% net= +0.180% pf= 1.21 med=+0.174% P&L= +9.78% MDD=12.31%
+n=  24 z=-2.5 h=   4 | trades= 731 win= 56.4% net= +0.244% pf= 1.50 med=+0.250% P&L= +8.93% MDD= 3.21%
+n=  24 z=-2.5 h=   8 | trades= 703 win= 56.5% net= +0.232% pf= 1.33 med=+0.231% P&L= +8.15% MDD= 7.57%
+n=  24 z=-2.5 h=  16 | trades= 684 win= 60.7% net= +0.317% pf= 1.39 med=+0.237% P&L=+10.84% MDD= 6.34%
+n=  48 z=-2.0 h=   4 | trades=1173 win= 55.2% net= +0.299% pf= 1.69 med=+0.261% P&L=+17.57% MDD= 3.27%
+n=  48 z=-2.0 h=   8 | trades= 940 win= 55.2% net= +0.382% pf= 1.66 med=+0.330% P&L=+17.97% MDD= 4.63%
+n=  48 z=-2.0 h=  16 | trades= 761 win= 56.9% net= +0.379% pf= 1.49 med=+0.262% P&L=+14.43% MDD= 6.48%
+n=  48 z=-2.5 h=   4 | trades= 581 win= 58.0% net= +0.417% pf= 2.25 med=+0.492% P&L=+12.12% MDD= 1.70%
+n=  48 z=-2.5 h=   8 | trades= 504 win= 57.5% net= +0.426% pf= 1.80 med=+0.360% P&L=+10.74% MDD= 3.06%
+n=  48 z=-2.5 h=  16 | trades= 462 win= 59.7% net= +0.625% pf= 2.00 med=+0.540% P&L=+14.43% MDD= 2.18%
+n=  96 z=-2.0 h=   4 | trades=1051 win= 55.9% net= +0.221% pf= 1.44 med=+0.197% P&L=+11.61% MDD= 6.23%
+n=  96 z=-2.0 h=   8 | trades= 766 win= 53.8% net= +0.225% pf= 1.32 med=+0.119% P&L= +8.61% MDD= 8.62%
+n=  96 z=-2.0 h=  16 | trades= 575 win= 53.2% net= +0.272% pf= 1.28 med=+0.277% P&L= +7.83% MDD=11.95%
+n=  96 z=-2.5 h=   4 | trades= 513 win= 57.9% net= +0.494% pf= 2.35 med=+0.363% P&L=+12.67% MDD= 1.44%
+n=  96 z=-2.5 h=   8 | trades= 404 win= 59.4% net= +0.582% pf= 2.11 med=+0.448% P&L=+11.77% MDD= 2.15%
+n=  96 z=-2.5 h=  16 | trades= 321 win= 58.6% net= +0.698% pf= 1.98 med=+0.734% P&L=+11.21% MDD= 3.52%
+
+=== TF 1h [FUTURES] (window/z/hold -> net%/trade, n, med, MDD) ===
+n=  24 z=-2.0 h=   4 | trades=1360 win= 55.7% net= +0.218% pf= 1.44 med=+0.193% P&L=+14.85% MDD= 5.61%
+n=  24 z=-2.0 h=   8 | trades=1187 win= 57.2% net= +0.334% pf= 1.53 med=+0.284% P&L=+19.83% MDD= 7.65%
+n=  24 z=-2.0 h=  16 | trades=1086 win= 61.2% net= +0.277% pf= 1.33 med=+0.271% P&L=+15.03% MDD=11.23%
+n=  24 z=-2.5 h=   4 | trades= 731 win= 58.5% net= +0.327% pf= 1.72 med=+0.333% P&L=+11.94% MDD= 2.71%
+n=  24 z=-2.5 h=   8 | trades= 703 win= 58.3% net= +0.320% pf= 1.48 med=+0.319% P&L=+11.24% MDD= 7.22%
+n=  24 z=-2.5 h=  16 | trades= 684 win= 61.5% net= +0.412% pf= 1.53 med=+0.334% P&L=+14.11% MDD= 5.60%
+n=  48 z=-2.0 h=   4 | trades=1173 win= 58.7% net= +0.381% pf= 1.96 med=+0.343% P&L=+22.36% MDD= 2.71%
+n=  48 z=-2.0 h=   8 | trades= 940 win= 56.9% net= +0.467% pf= 1.85 med=+0.414% P&L=+21.94% MDD= 4.07%
+n=  48 z=-2.0 h=  16 | trades= 761 win= 58.7% net= +0.468% pf= 1.64 med=+0.350% P&L=+17.79% MDD= 5.72%
+n=  48 z=-2.5 h=   4 | trades= 581 win= 62.1% net= +0.498% pf= 2.66 med=+0.573% P&L=+14.48% MDD= 1.42%
+n=  48 z=-2.5 h=   8 | trades= 504 win= 59.3% net= +0.510% pf= 2.02 med=+0.443% P&L=+12.84% MDD= 2.81%
+n=  48 z=-2.5 h=  16 | trades= 462 win= 61.3% net= +0.712% pf= 2.20 med=+0.626% P&L=+16.45% MDD= 2.03%
+n=  96 z=-2.0 h=   4 | trades=1051 win= 58.4% net= +0.301% pf= 1.64 med=+0.277% P&L=+15.83% MDD= 5.63%
+n=  96 z=-2.0 h=   8 | trades= 766 win= 56.1% net= +0.306% pf= 1.46 med=+0.200% P&L=+11.72% MDD= 8.09%
+n=  96 z=-2.0 h=  16 | trades= 575 win= 55.7% net= +0.356% pf= 1.38 med=+0.361% P&L=+10.22% MDD=11.65%
+n=  96 z=-2.5 h=   4 | trades= 513 win= 61.4% net= +0.574% pf= 2.71 med=+0.443% P&L=+14.73% MDD= 1.29%
+n=  96 z=-2.5 h=   8 | trades= 404 win= 61.9% net= +0.663% pf= 2.34 med=+0.531% P&L=+13.40% MDD= 2.07%
+n=  96 z=-2.5 h=  16 | trades= 321 win= 60.7% net= +0.781% pf= 2.14 med=+0.817% P&L=+12.54% MDD= 3.36%
