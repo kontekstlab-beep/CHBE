@@ -1,0 +1,246 @@
+MAIN: live trades=66, replay lines excluded=1638, open positions now=0
+
+--- MAIN ---
+ALL                          n= 66 win= 31.8% sumP&L=  -183.13 avgP&L= -2.775 avg%=-0.727% med%=-0.978% net@0.1%=-0.927% net@0.075%=-0.877%
+  exit=reversion             n=  5 win=100.0% sumP&L=   +69.64 avgP&L=+13.927 avg%=+6.225% med%=+6.029% net@0.1%=+6.025% net@0.075%=+6.075%
+  exit=stop                  n=  4 win=  0.0% sumP&L=  -155.87 avgP&L=-38.967 avg%=-7.642% med%=-7.517% net@0.1%=-7.842% net@0.075%=-7.792%
+  exit=time                  n= 57 win= 28.1% sumP&L=   -96.89 avgP&L= -1.700 avg%=-0.851% med%=-1.047% net@0.1%=-1.051% net@0.075%=-1.001%
+  wave 12-13 Oct             n= 11 win=  9.1% sumP&L=  -274.30 avgP&L=-24.936 avg%=-4.859% med%=-6.139% net@0.1%=-5.059% net@0.075%=-5.009%
+  wave 14-16 Oct             n= 45 win= 24.4% sumP&L=   -16.04 avgP&L= -0.356 avg%=-0.369% med%=-1.059% net@0.1%=-0.569% net@0.075%=-0.519%
+  wave 8-9 Oct               n= 10 win= 90.0% sumP&L=  +107.21 avgP&L=+10.721 avg%=+2.209% med%=+2.284% net@0.1%=+2.009% net@0.075%=+2.059%
+
+--- MAIN limit orders ---
+limits placed (entry+ladder, accepted): 81 | TTL cancels: 16 | rejects: insufficient=56 postOnly=62 other=1
+sym            placed   ttl  insuf postOnly
+ADA/USDT            6     2      2        0
+APT/USDT            5     2      1        1
+SOL/USDT            4     0      1        3
+DOT/USDT            4     0      3        2
+HBAR/USDT           4     1      0        0
+IMX/USDT            4     2      0        0
+JTO/USDT            4     1      1        1
+ETC/USDT            4     1      2        1
+AVAX/USDT           3     0      1        0
+BTC/USDT            3     2      2        2
+ETH/USDT            3     0      1        2
+LINK/USDT           3     0      2        2
+ARB/USDT            3     0      0        3
+WLD/USDT            3     0      1        5
+ONDO/USDT           3     2      1        1
+FET/USDT            3     0      2        0
+OP/USDT             2     0      0        1
+SEI/USDT            2     0      0        7
+LDO/USDT            2     1      4        0
+AUCTION/USDT        2     1      6        4
+XLM/USDT            2     0      2        1
+ALGO/USDT           2     0      0        2
+ICP/USDT            2     0      0        1
+WIF/USDT            2     0      6        3
+JUP/USDT            2     1      6        5
+RENDER/USDT         1     0      0        0
+ETHFI/USDT          1     0      3        4
+ENA/USDT            1     0      5        8
+STX/USDT            1     0      0        1
+TIA/USDT            0     0      4        2
+B2: live trades=95, replay lines excluded=0, open positions now=1
+
+--- B2 ---
+ALL                          n= 95 win= 42.1% sumP&L=  -205.97 avgP&L= -2.168 avg%=-0.075% med%=-0.304% net@0.1%=-0.275% net@0.075%=-0.225%
+  exit=reversion             n= 22 win=100.0% sumP&L=   +30.03 avgP&L= +1.365 avg%=+4.813% med%=+5.055% net@0.1%=+4.613% net@0.075%=+4.663%
+  exit=stop                  n=  6 win=  0.0% sumP&L=  -116.95 avgP&L=-19.492 avg%=-7.645% med%=-7.485% net@0.1%=-7.845% net@0.075%=-7.795%
+  exit=time                  n= 67 win= 26.9% sumP&L=  -119.05 avgP&L= -1.777 avg%=-1.002% med%=-1.171% net@0.1%=-1.202% net@0.075%=-1.152%
+  wave 12-13 Oct             n= 25 win= 48.0% sumP&L=  -162.78 avgP&L= -6.511 avg%=-2.144% med%=+0.046% net@0.1%=-2.344% net@0.075%=-2.294%
+  wave 14-16 Oct             n= 70 win= 40.0% sumP&L=   -43.19 avgP&L= -0.617 avg%=+0.664% med%=-0.411% net@0.1%=+0.464% net@0.075%=+0.514%
+
+--- B2 limit orders ---
+limits placed (entry+ladder, accepted): 124 | TTL cancels: 14 | rejects: insufficient=10 postOnly=85 other=0
+sym            placed   ttl  insuf postOnly
+ETC/USDT            7     1      0        4
+SOL/USDT            6     0      0        3
+IMX/USDT            6     0      0        2
+WIF/USDT            6     1      0        3
+BTC/USDT            5     0      1        3
+HBAR/USDT           5     0      0        2
+AUCTION/USDT        5     1      2        5
+FET/USDT            5     0      0        0
+JTO/USDT            5     1      0        5
+LINK/USDT           5     1      0        2
+XLM/USDT            5     1      0        1
+ADA/USDT            4     0      0        3
+JUP/USDT            4     0      0        4
+WLD/USDT            4     1      3        6
+LDO/USDT            4     1      0        2
+ETH/USDT            4     0      1        0
+APT/USDT            4     1      0        3
+AVAX/USDT           4     0      0        1
+DOT/USDT            4     2      0        6
+ONDO/USDT           4     0      0        1
+ETHFI/USDT          4     1      0        1
+SEI/USDT            3     0      0        4
+ARB/USDT            3     0      0        4
+TIA/USDT            3     1      0        2
+ENA/USDT            3     0      3        6
+ALGO/USDT           3     1      0        2
+RENDER/USDT         3     0      0        3
+OP/USDT             2     0      0        2
+ICP/USDT            2     0      0        3
+STX/USDT            2     0      0        2
+
+--- TOTAL (both bots) ---
+ALL                          n=161 win= 37.9% sumP&L=  -389.09 avgP&L= -2.417 avg%=-0.342% med%=-0.772% net@0.1%=-0.542% net@0.075%=-0.492%
+  exit=reversion             n= 27 win=100.0% sumP&L=   +99.67 avgP&L= +3.691 avg%=+5.074% med%=+5.157% net@0.1%=+4.874% net@0.075%=+4.924%
+  exit=stop                  n= 10 win=  0.0% sumP&L=  -272.82 avgP&L=-27.282 avg%=-7.644% med%=-7.517% net@0.1%=-7.844% net@0.075%=-7.794%
+  exit=time                  n=124 win= 27.4% sumP&L=  -215.94 avgP&L= -1.741 avg%=-0.933% med%=-1.093% net@0.1%=-1.133% net@0.075%=-1.083%
+  wave 12-13 Oct             n= 36 win= 36.1% sumP&L=  -437.07 avgP&L=-12.141 avg%=-2.974% med%=-1.888% net@0.1%=-3.174% net@0.075%=-3.124%
+  wave 14-16 Oct             n=115 win= 33.9% sumP&L=   -59.23 avgP&L= -0.515 avg%=+0.260% med%=-0.908% net@0.1%=+0.060% net@0.075%=+0.110%
+  wave 8-9 Oct               n= 10 win= 90.0% sumP&L=  +107.21 avgP&L=+10.721 avg%=+2.209% med%=+2.284% net@0.1%=+2.009% net@0.075%=+2.059%
+
+=== ORPHANS (manual sale 14.10, restart-fill bug) ===
+BTC/USDT   qty=0.0043 in@82592.01 out@83494.98 -> P&L=+3.17 USDT (+1.09%)
+SOL/USDT   qty=3.253 in@108.78 out@107.27 -> P&L=-5.61 USDT (-1.39%)
+ETC/USDT   qty=42.74 in@8.28 out@8.11 -> P&L=-7.97 USDT (-2.05%)
+IMX/USDT   qty=1943.28 in@0.1821 out@0.1741 -> P&L=-16.24 USDT (-4.39%)
+orphans total P&L (incl. 0.1%/side fees): -26.65 USDT
+
+=== REAL FEES (fetch_my_trades, account-level) ===
+fills analyzed: 362 | notional: 55059.59 USDT | total fees: 0.00 USDT
+effective rate per side: 0.0000%
+fee by asset (native units): ADA=0.000000, ALGO=0.000000, APT=0.000000, ARB=0.000000, AUCTION=0.000000, AVAX=0.000000, BTC=0.000000, DOT=0.000000, ENA=0.000000, ETC=0.000000, ETH=0.000000, ETHFI=0.000000, FET=0.000000, HBAR=0.000000, ICP=0.000000, IMX=0.000000, JTO=0.000000, JUP=0.000000, LDO=0.000000, LINK=0.000000, ONDO=0.000000, OP=0.000000, RENDER=0.000000, SEI=0.000000, SOL=0.000000, STX=0.000000, TIA=0.000000, USDT=0.000000, WIF=0.000000, WLD=0.000000, XLM=0.000000
+
+=== MARKET-EXIT SLIPPAGE (testnet fill vs MAINNET 1h close) ===
+n=134 | mean slip=+1.751% | median=+0.831% | worse-than-mainnet share=56%
+  MAIN AVAX/USDT  2026-10-09 01:00 time      testnet=10.087 mainnet=10.071 slip=-0.16%
+  MAIN BTC/USDT   2026-10-09 04:00 time      testnet=81812 mainnet=82385.1 slip=+0.70%
+  MAIN ETH/USDT   2026-10-09 04:00 time      testnet=2477.39 mainnet=2492.14 slip=+0.59%
+  MAIN SOL/USDT   2026-10-09 04:00 time      testnet=109.34 mainnet=110.39 slip=+0.95%
+  MAIN LINK/USDT  2026-10-09 04:00 time      testnet=12.715 mainnet=12.844 slip=+1.00%
+  MAIN ADA/USDT   2026-10-09 04:00 time      testnet=0.2324 mainnet=0.2355 slip=+1.32%
+  MAIN ARB/USDT   2026-10-09 04:00 time      testnet=0.172 mainnet=0.17683 slip=+2.73%
+  MAIN APT/USDT   2026-10-09 04:00 time      testnet=0.7372 mainnet=0.7694 slip=+4.19%
+  MAIN DOT/USDT   2026-10-13 04:00 stop      testnet=1.128 mainnet=1.1755 slip=+4.04%
+  MAIN ADA/USDT   2026-10-13 04:00 time      testnet=0.227 mainnet=0.2367 slip=+4.10%
+  MAIN OP/USDT    2026-10-13 04:00 time      testnet=0.1269 mainnet=0.13493 slip=+5.95%
+  MAIN HBAR/USDT  2026-10-13 04:00 time      testnet=0.0852 mainnet=0.08735 slip=+2.46%
+  MAIN SEI/USDT   2026-10-13 04:00 stop      testnet=0.06076 mainnet=0.06328 slip=+3.98%
+  MAIN IMX/USDT   2026-10-13 04:00 time      testnet=0.171104 mainnet=0.178 slip=+3.87%
+  MAIN JTO/USDT   2026-10-13 04:00 stop      testnet=0.496344 mainnet=0.5271 slip=+5.83%
+  MAIN WLD/USDT   2026-10-13 04:00 stop      testnet=0.4801 mainnet=0.5159 slip=+6.94%
+  MAIN SOL/USDT   2026-10-13 07:00 time      testnet=107.43 mainnet=108.59 slip=+1.07%
+  MAIN ETC/USDT   2026-10-13 07:00 time      testnet=8.17 mainnet=8.253 slip=+1.01%
+  MAIN DOT/USDT   2026-10-13 14:00 time      testnet=1.175 mainnet=1.1878 slip=+1.08%
+  MAIN ETH/USDT   2026-10-15 02:00 time      testnet=2419.43 mainnet=2412.77 slip=-0.28%
+  MAIN SOL/USDT   2026-10-15 02:00 time      testnet=104.59 mainnet=104 slip=-0.57%
+  MAIN LINK/USDT  2026-10-15 02:00 time      testnet=12.421 mainnet=12.332 slip=-0.72%
+  MAIN AVAX/USDT  2026-10-15 02:00 time      testnet=10.011 mainnet=9.867 slip=-1.46%
+  MAIN HBAR/USDT  2026-10-15 02:00 time      testnet=0.08445 mainnet=0.08355 slip=-1.08%
+  MAIN XLM/USDT   2026-10-15 02:00 time      testnet=0.1837 mainnet=0.18171 slip=-1.10%
+  MAIN RENDER/USDT 2026-10-15 02:00 time      testnet=1.926 mainnet=1.895 slip=-1.64%
+  MAIN IMX/USDT   2026-10-15 02:00 time      testnet=0.1672 mainnet=0.1652 slip=-1.21%
+  MAIN BTC/USDT   2026-10-15 05:00 time      testnet=81640 mainnet=81560.3 slip=-0.10%
+  MAIN JTO/USDT   2026-10-15 05:00 time      testnet=0.4869 mainnet=0.4623 slip=-5.32%
+  MAIN ALGO/USDT  2026-10-15 06:00 time      testnet=0.1105 mainnet=0.10794 slip=-2.37%
+  MAIN ICP/USDT   2026-10-15 06:00 time      testnet=2.93 mainnet=2.861 slip=-2.41%
+  MAIN FET/USDT   2026-10-15 06:00 time      testnet=0.1956 mainnet=0.1922 slip=-1.77%
+  MAIN WIF/USDT   2026-10-15 06:00 time      testnet=0.1947 mainnet=0.19 slip=-2.47%
+  MAIN WLD/USDT   2026-10-15 06:00 time      testnet=0.4793 mainnet=0.4671 slip=-2.61%
+  MAIN ETHFI/USDT 2026-10-15 08:00 time      testnet=0.6178 mainnet=0.6113 slip=-1.06%
+  MAIN ENA/USDT   2026-10-15 08:00 time      testnet=0.1888 mainnet=0.18597 slip=-1.52%
+  MAIN SOL/USDT   2026-10-15 16:00 time      testnet=101.76 mainnet=106.04 slip=+4.04%
+  MAIN AVAX/USDT  2026-10-15 16:00 time      testnet=9.532 mainnet=9.987 slip=+4.56%
+  MAIN ADA/USDT   2026-10-15 16:00 time      testnet=0.2194 mainnet=0.2304 slip=+4.77%
+  MAIN ARB/USDT   2026-10-15 16:00 time      testnet=0.1722 mainnet=0.18977 slip=+9.26%
+  MAIN APT/USDT   2026-10-15 16:00 time      testnet=0.7653 mainnet=0.8263 slip=+7.38%
+  MAIN HBAR/USDT  2026-10-15 16:00 time      testnet=0.0809 mainnet=0.0835 slip=+3.11%
+  MAIN ETC/USDT   2026-10-15 16:00 time      testnet=7.66 mainnet=8.042 slip=+4.75%
+  MAIN FET/USDT   2026-10-15 16:00 time      testnet=0.1931 mainnet=0.209 slip=+7.61%
+  MAIN IMX/USDT   2026-10-15 16:01 time      testnet=0.1576 mainnet=0.165 slip=+4.48%
+  MAIN LDO/USDT   2026-10-15 16:01 time      testnet=0.3832 mainnet=0.4046 slip=+5.29%
+  MAIN AUCTION/USDT 2026-10-15 16:01 time      testnet=3.332 mainnet=3.465 slip=+3.84%
+  MAIN BTC/USDT   2026-10-15 17:00 time      testnet=80193.1 mainnet=82081.2 slip=+2.30%
+  MAIN ETH/USDT   2026-10-15 17:00 time      testnet=2340.31 mainnet=2433.79 slip=+3.84%
+  MAIN XLM/USDT   2026-10-15 17:00 time      testnet=0.1779 mainnet=0.18442 slip=+3.54%
+  MAIN ICP/USDT   2026-10-15 17:00 time      testnet=2.882 mainnet=3.035 slip=+5.04%
+  MAIN SEI/USDT   2026-10-15 17:00 time      testnet=0.05808 mainnet=0.06125 slip=+5.18%
+  MAIN ONDO/USDT  2026-10-15 17:00 time      testnet=0.4253 mainnet=0.46 slip=+7.54%
+  MAIN JTO/USDT   2026-10-15 17:00 time      testnet=0.4427 mainnet=0.4703 slip=+5.87%
+  MAIN WLD/USDT   2026-10-15 17:00 time      testnet=0.4655 mainnet=0.4938 slip=+5.73%
+  MAIN LINK/USDT  2026-10-15 18:00 time      testnet=12.328 mainnet=12.518 slip=+1.52%
+  MAIN ALGO/USDT  2026-10-15 18:00 time      testnet=0.1131 mainnet=0.11411 slip=+0.89%
+  MAIN WIF/USDT   2026-10-15 18:00 time      testnet=0.1975 mainnet=0.2015 slip=+1.99%
+  MAIN JUP/USDT   2026-10-15 18:00 time      testnet=0.3107 mainnet=0.3091 slip=-0.52%
+  MAIN DOT/USDT   2026-10-15 19:00 time      testnet=1.113 mainnet=1.1312 slip=+1.61%
+  MAIN STX/USDT   2026-10-15 23:00 time      testnet=0.4049 mainnet=0.4279 slip=+5.38%
+  B2   TIA/USDT   2026-10-13 04:00 stop      testnet=0.5113 mainnet=0.5946 slip=+14.01%
+  B2   SEI/USDT   2026-10-13 04:00 stop      testnet=0.06076 mainnet=0.06328 slip=+3.98%
+  B2   WIF/USDT   2026-10-13 04:00 stop      testnet=0.1977 mainnet=0.2068 slip=+4.40%
+  B2   WLD/USDT   2026-10-13 04:00 stop      testnet=0.4819 mainnet=0.5159 slip=+6.59%
+  B2   LDO/USDT   2026-10-13 04:00 stop      testnet=0.3884 mainnet=0.4142 slip=+6.23%
+  B2   ADA/USDT   2026-10-13 06:00 time      testnet=0.2354 mainnet=0.2396 slip=+1.75%
+  B2   OP/USDT    2026-10-13 06:00 time      testnet=0.1324 mainnet=0.13821 slip=+4.20%
+  B2   HBAR/USDT  2026-10-13 06:00 time      testnet=0.08737 mainnet=0.08805 slip=+0.77%
+  B2   JUP/USDT   2026-10-13 06:00 time      testnet=0.3333 mainnet=0.3377 slip=+1.30%
+  B2   AUCTION/USDT 2026-10-13 06:00 time      testnet=3.573 mainnet=3.644 slip=+1.95%
+  B2   ARB/USDT   2026-10-13 08:00 time      testnet=0.1871 mainnet=0.18904 slip=+1.03%
+  B2   ETC/USDT   2026-10-13 08:00 time      testnet=8.23 mainnet=8.229 slip=-0.01%
+  B2   IMX/USDT   2026-10-13 08:00 time      testnet=0.1787 mainnet=0.1801 slip=+0.78%
+  B2   SOL/USDT   2026-10-13 11:00 time      testnet=108.62 mainnet=106.49 slip=-2.00%
+  B2   APT/USDT   2026-10-13 11:00 time      testnet=0.85 mainnet=0.8278 slip=-2.68%
+  B2   FET/USDT   2026-10-13 11:00 time      testnet=0.2186 mainnet=0.2132 slip=-2.53%
+  B2   JTO/USDT   2026-10-13 11:00 time      testnet=0.5406 mainnet=0.525 slip=-2.97%
+  B2   ENA/USDT   2026-10-13 11:00 time      testnet=0.2166 mainnet=0.21139 slip=-2.46%
+  B2   AVAX/USDT  2026-10-13 12:00 time      testnet=10.382 mainnet=10.241 slip=-1.38%
+  B2   DOT/USDT   2026-10-13 12:00 time      testnet=1.188 mainnet=1.1729 slip=-1.29%
+  B2   XLM/USDT   2026-10-13 12:00 time      testnet=0.1933 mainnet=0.18981 slip=-1.84%
+  B2   ONDO/USDT  2026-10-13 12:00 time      testnet=0.336 mainnet=0.4624 slip=+27.34%
+  B2   ADA/USDT   2026-10-15 01:00 time      testnet=0.2293 mainnet=0.2286 slip=-0.31%
+  B2   RENDER/USDT 2026-10-15 01:00 time      testnet=1.914 mainnet=1.918 slip=+0.21%
+  B2   ONDO/USDT  2026-10-15 01:00 time      testnet=0.447 mainnet=0.4442 slip=-0.63%
+  B2   IMX/USDT   2026-10-15 01:00 time      testnet=0.1676 mainnet=0.1668 slip=-0.48%
+  B2   JUP/USDT   2026-10-15 01:00 time      testnet=0.3201 mainnet=0.3193 slip=-0.25%
+  B2   JTO/USDT   2026-10-15 01:00 time      testnet=0.4926 mainnet=0.484 slip=-1.78%
+  B2   ETHFI/USDT 2026-10-15 01:00 time      testnet=0.632688 mainnet=0.634 slip=+0.21%
+  B2   ETH/USDT   2026-10-15 02:00 time      testnet=2419.43 mainnet=2412.77 slip=-0.28%
+  B2   SOL/USDT   2026-10-15 02:00 time      testnet=104.59 mainnet=104 slip=-0.57%
+  B2   LINK/USDT  2026-10-15 02:00 time      testnet=12.414 mainnet=12.332 slip=-0.66%
+  B2   AVAX/USDT  2026-10-15 02:00 time      testnet=10.011 mainnet=9.867 slip=-1.46%
+  B2   HBAR/USDT  2026-10-15 02:00 time      testnet=0.08445 mainnet=0.08355 slip=-1.08%
+  B2   XLM/USDT   2026-10-15 02:00 time      testnet=0.1837 mainnet=0.18171 slip=-1.10%
+  B2   WIF/USDT   2026-10-15 02:00 time      testnet=0.2024 mainnet=0.1995 slip=-1.45%
+  B2   BTC/USDT   2026-10-15 05:00 time      testnet=81640 mainnet=81560.3 slip=-0.10%
+  B2   ALGO/USDT  2026-10-15 06:00 time      testnet=0.1105 mainnet=0.10794 slip=-2.37%
+  B2   ICP/USDT   2026-10-15 06:00 time      testnet=2.93 mainnet=2.861 slip=-2.41%
+  B2   FET/USDT   2026-10-15 06:00 time      testnet=0.1956 mainnet=0.1922 slip=-1.77%
+  B2   JTO/USDT   2026-10-15 07:00 stop      testnet=0.4576 mainnet=0.4541 slip=-0.77%
+  B2   WLD/USDT   2026-10-15 08:00 time      testnet=0.4828 mainnet=0.4744 slip=-1.77%
+  B2   ENA/USDT   2026-10-15 08:00 time      testnet=0.1886 mainnet=0.18597 slip=-1.41%
+  B2   RENDER/USDT 2026-10-15 11:00 time      testnet=1.866 mainnet=1.833 slip=-1.80%
+  B2   ONDO/USDT  2026-10-15 11:00 time      testnet=0.4347 mainnet=0.4279 slip=-1.59%
+  B2   LDO/USDT   2026-10-15 11:01 time      testnet=0.3857 mainnet=0.3856 slip=-0.03%
+  B2   ETHFI/USDT 2026-10-15 11:01 time      testnet=0.6126 mainnet=0.6011 slip=-1.91%
+  B2   ETH/USDT   2026-10-15 12:00 time      testnet=2374.65 mainnet=2362.29 slip=-0.52%
+  B2   XLM/USDT   2026-10-15 12:00 time      testnet=0.1807 mainnet=0.17971 slip=-0.55%
+  B2   SOL/USDT   2026-10-15 13:00 time      testnet=103.18 mainnet=101.66 slip=-1.50%
+  B2   LINK/USDT  2026-10-15 14:00 time      testnet=12.033 mainnet=11.896 slip=-1.15%
+  B2   HBAR/USDT  2026-10-15 14:00 time      testnet=0.0812 mainnet=0.08062 slip=-0.72%
+  B2   WIF/USDT   2026-10-15 14:00 time      testnet=0.1928 mainnet=0.1899 slip=-1.53%
+  B2   SEI/USDT   2026-10-15 15:00 time      testnet=0.05907 mainnet=0.06045 slip=+2.28%
+  B2   IMX/USDT   2026-10-15 15:00 time      testnet=0.1601 mainnet=0.163 slip=+1.78%
+  B2   AVAX/USDT  2026-10-15 16:00 time      testnet=9.532 mainnet=9.987 slip=+4.56%
+  B2   ARB/USDT   2026-10-15 16:00 time      testnet=0.1722 mainnet=0.18977 slip=+9.26%
+  B2   APT/USDT   2026-10-15 16:00 time      testnet=0.76521 mainnet=0.8263 slip=+7.39%
+  B2   ETC/USDT   2026-10-15 16:00 time      testnet=7.66 mainnet=8.042 slip=+4.75%
+  B2   FET/USDT   2026-10-15 16:00 time      testnet=0.1931 mainnet=0.209 slip=+7.61%
+  B2   AUCTION/USDT 2026-10-15 16:01 time      testnet=3.332 mainnet=3.465 slip=+3.84%
+  B2   BTC/USDT   2026-10-15 17:00 time      testnet=80193.1 mainnet=82081.2 slip=+2.30%
+  B2   ICP/USDT   2026-10-15 17:00 time      testnet=2.88 mainnet=3.035 slip=+5.11%
+  B2   TIA/USDT   2026-10-15 17:00 time      testnet=0.5355 mainnet=0.6001 slip=+10.76%
+  B2   JTO/USDT   2026-10-15 17:00 time      testnet=0.4428 mainnet=0.4703 slip=+5.85%
+  B2   DOT/USDT   2026-10-15 18:00 time      testnet=1.097 mainnet=1.1263 slip=+2.60%
+  B2   ADA/USDT   2026-10-15 18:00 time      testnet=0.2272 mainnet=0.2311 slip=+1.69%
+  B2   ALGO/USDT  2026-10-15 18:00 time      testnet=0.1131 mainnet=0.11411 slip=+0.89%
+  B2   JUP/USDT   2026-10-15 18:01 time      testnet=0.3108 mainnet=0.3091 slip=-0.55%
+  B2   OP/USDT    2026-10-15 19:00 time      testnet=0.1389 mainnet=0.13993 slip=+0.74%
+  B2   ETH/USDT   2026-10-15 21:00 time      testnet=2445.71 mainnet=2453.25 slip=+0.31%
+  B2   STX/USDT   2026-10-15 23:00 time      testnet=0.4049 mainnet=0.4279 slip=+5.38%
+  B2   IMX/USDT   2026-10-16 01:00 time      testnet=0.1665 mainnet=0.1656 slip=-0.54%
+NOTE: testnet order book != mainnet; part of the slip is sandbox divergence, on real execution it should be better.
